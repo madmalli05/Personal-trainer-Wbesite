@@ -23,11 +23,27 @@ What you can change there:
 |--------|----------------|
 | `theme` | Colors for the whole site (accent, background, text…) |
 | `brand` | Business name, your name, hero headline, tagline, buttons |
-| `about` | Your bio + the stats that count up on scroll |
+| `about` | Your bio, **coach photo** (`image`) + the stats that count up on scroll |
 | `programs` | Coaching plans, prices and features (`featured: true` highlights one) |
-| `results` | Client transformations & testimonials |
-| `contact` | Email, phone, location, social links |
+| `transformations` | **Before/after slider** photos (`before`/`after` per client) |
+| `results` | Testimonials + client **avatars** |
+| `faq` | Frequently-asked questions (click to expand) |
+| `blog` | **Journal articles** — `excerpt` for the card, `body` (array of paragraphs) for the popup |
+| `contact` | Email, phone, location, socials + **`formspreeId`** (see below) |
 | `nav` | The top menu links |
+
+### Photos
+Every photo is just a URL in `content.js`. The defaults pull real stock photos
+(Lorem Picsum) so it looks complete out of the box — **swap them for your own
+gym/client photos**. You can paste any image URL, or drop a file into the
+`public/` folder and reference it like `"/my-photo.jpg"`. If an image ever fails
+to load, an on-brand placeholder shows automatically (never a broken image).
+
+### Contact form → your inbox (Formspree)
+By default the form opens the visitor's email app. To receive messages straight
+to your inbox instead, create a free form at [formspree.io](https://formspree.io),
+copy the id (the part after `/f/`) and paste it into `contact.formspreeId`.
+Full steps are in **[DEPLOY.md](DEPLOY.md)**.
 
 > Page title & SEO description live in [`index.html`](index.html) — update those
 > to match your business too.
@@ -49,27 +65,21 @@ Edit `src/content.js` and the page refreshes automatically.
 
 ---
 
-## 🚀 Deploy it (put it online)
+## 🚀 Deploy it (get a live link)
 
-Build the production version:
+**👉 Step-by-step instructions are in [DEPLOY.md](DEPLOY.md).** The recommended
+path is **Vercel**: connect your GitHub once and every push auto-deploys a live
+URL — no servers, no config.
+
+Prefer to do it by hand? Build a static copy and host the `dist/` folder anywhere:
 
 ```bash
 npm run build    # creates a "dist/" folder
 npm run preview  # (optional) preview the built site locally
 ```
 
-The `dist/` folder is a plain static website you can host anywhere. Easiest
-options:
-
-- **Netlify / Vercel:** drag-and-drop the `dist` folder, or connect this repo
-  and use build command `npm run build` and publish directory `dist`.
-- **GitHub Pages:** push the repo, then serve the `dist` folder (the project is
-  already configured with a relative base path, so it works in subfolders).
-
-No server or database is required — the contact form opens the visitor's email
-app addressed to you. To collect submissions automatically instead, swap the
-`onSubmit` handler in `src/components/Contact.jsx` for a form service such as
-[Formspree](https://formspree.io).
+The project uses a relative base path, so the built site works on Vercel,
+Netlify, or even a subfolder. No server or database is required.
 
 ---
 
