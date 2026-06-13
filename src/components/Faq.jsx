@@ -1,5 +1,6 @@
 import { faq } from "../content";
 import Reveal from "./Reveal";
+import SplitHeading from "./motion/SplitHeading";
 
 // Accordion built on native <details>/<summary> (accessible by default) with a
 // CSS grid-rows reveal animation. No JS state needed.
@@ -11,9 +12,7 @@ export default function Faq() {
           <Reveal>
             <span className="kicker">{faq.kicker}</span>
           </Reveal>
-          <Reveal delay={0.05}>
-            <h2 className="section-title">{faq.title}</h2>
-          </Reveal>
+          <SplitHeading className="section-title">{faq.title}</SplitHeading>
         </div>
 
         <div className="faq-list">

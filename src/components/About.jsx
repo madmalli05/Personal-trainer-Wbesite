@@ -3,6 +3,7 @@ import { useInView } from "framer-motion";
 import { about } from "../content";
 import Reveal from "./Reveal";
 import Img from "./Img";
+import SplitHeading from "./motion/SplitHeading";
 
 // Counts up from 0 → value once it scrolls into view.
 function Counter({ value, suffix }) {
@@ -41,9 +42,7 @@ export default function About() {
           <Reveal>
             <span className="kicker">{about.kicker}</span>
           </Reveal>
-          <Reveal delay={0.05}>
-            <h2 className="section-title">{about.title}</h2>
-          </Reveal>
+          <SplitHeading className="section-title">{about.title}</SplitHeading>
           {about.paragraphs.map((p, i) => (
             <Reveal key={i} delay={0.1 + i * 0.08} as="p" className="">
               <span style={{ display: "block" }}>{p}</span>

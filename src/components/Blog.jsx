@@ -3,6 +3,7 @@ import { blog } from "../content";
 import Reveal from "./Reveal";
 import Img from "./Img";
 import TiltCard from "./motion/TiltCard";
+import SplitHeading from "./motion/SplitHeading";
 
 function formatDate(iso) {
   try {
@@ -47,11 +48,9 @@ export default function Blog() {
           <Reveal>
             <span className="kicker">{blog.kicker}</span>
           </Reveal>
-          <Reveal delay={0.05}>
-            <h2 className="section-title" style={{ maxWidth: "22ch" }}>
-              {blog.title}
-            </h2>
-          </Reveal>
+          <SplitHeading className="section-title" style={{ maxWidth: "22ch" }}>
+            {blog.title}
+          </SplitHeading>
           <Reveal delay={0.1}>
             <p className="section-subtitle">{blog.subtitle}</p>
           </Reveal>

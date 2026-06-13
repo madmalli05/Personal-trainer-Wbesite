@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { contact } from "../content";
 import Reveal from "./Reveal";
+import SplitHeading from "./motion/SplitHeading";
+import MagneticButton from "./motion/MagneticButton";
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
@@ -53,9 +55,7 @@ export default function Contact() {
             <Reveal>
               <span className="kicker">{contact.kicker}</span>
             </Reveal>
-            <Reveal delay={0.05}>
-              <h2 className="section-title">{contact.title}</h2>
-            </Reveal>
+            <SplitHeading className="section-title">{contact.title}</SplitHeading>
             <Reveal delay={0.1}>
               <p className="section-subtitle" style={{ marginTop: 0 }}>
                 {contact.subtitle}
@@ -128,14 +128,15 @@ export default function Contact() {
                 className="hp-field"
               />
 
-              <button
+              <MagneticButton
+                as="button"
                 type="submit"
-                className="btn btn-primary"
+                className="btn btn-primary magnetic"
                 style={{ justifyContent: "center" }}
                 disabled={status === "sending"}
               >
                 {status === "sending" ? "Sending…" : "Send Message →"}
-              </button>
+              </MagneticButton>
 
               <p
                 className={`form-status ${status === "error" ? "error" : ""} ${

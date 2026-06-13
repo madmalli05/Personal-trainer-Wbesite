@@ -2,6 +2,7 @@ import { results } from "../content";
 import Reveal from "./Reveal";
 import Img from "./Img";
 import TiltCard from "./motion/TiltCard";
+import SplitHeading from "./motion/SplitHeading";
 
 export default function Results() {
   return (
@@ -11,11 +12,9 @@ export default function Results() {
           <Reveal>
             <span className="kicker">{results.kicker}</span>
           </Reveal>
-          <Reveal delay={0.05}>
-            <h2 className="section-title" style={{ maxWidth: "20ch" }}>
-              {results.title}
-            </h2>
-          </Reveal>
+          <SplitHeading className="section-title" style={{ maxWidth: "20ch" }}>
+            {results.title}
+          </SplitHeading>
           <Reveal delay={0.1}>
             <p className="section-subtitle">{results.subtitle}</p>
           </Reveal>

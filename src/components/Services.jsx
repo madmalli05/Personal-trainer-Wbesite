@@ -1,6 +1,7 @@
 import { programs } from "../content";
 import Reveal from "./Reveal";
 import TiltCard from "./motion/TiltCard";
+import SplitHeading from "./motion/SplitHeading";
 
 function Check() {
   return (
@@ -18,11 +19,9 @@ export default function Services() {
           <Reveal>
             <span className="kicker">{programs.kicker}</span>
           </Reveal>
-          <Reveal delay={0.05}>
-            <h2 className="section-title" style={{ maxWidth: "20ch" }}>
-              {programs.title}
-            </h2>
-          </Reveal>
+          <SplitHeading className="section-title" style={{ maxWidth: "20ch" }}>
+            {programs.title}
+          </SplitHeading>
           <Reveal delay={0.1}>
             <p className="section-subtitle">{programs.subtitle}</p>
           </Reveal>

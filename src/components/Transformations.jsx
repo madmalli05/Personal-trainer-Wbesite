@@ -1,6 +1,7 @@
 import { transformations } from "../content";
 import Reveal from "./Reveal";
 import BeforeAfter from "./BeforeAfter";
+import SplitHeading from "./motion/SplitHeading";
 
 export default function Transformations() {
   return (
@@ -10,11 +11,9 @@ export default function Transformations() {
           <Reveal>
             <span className="kicker">{transformations.kicker}</span>
           </Reveal>
-          <Reveal delay={0.05}>
-            <h2 className="section-title" style={{ maxWidth: "20ch" }}>
-              {transformations.title}
-            </h2>
-          </Reveal>
+          <SplitHeading className="section-title" style={{ maxWidth: "20ch" }}>
+            {transformations.title}
+          </SplitHeading>
           <Reveal delay={0.1}>
             <p className="section-subtitle">{transformations.subtitle}</p>
           </Reveal>
