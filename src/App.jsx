@@ -9,6 +9,7 @@ import About from "./components/About";
 import Services from "./components/Services";
 import Transformations from "./components/Transformations";
 import Results from "./components/Results";
+import Faq from "./components/Faq";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 
@@ -71,6 +72,7 @@ export default function App() {
         <Services />
         <Transformations />
         <Results />
+        <Faq />
         <Contact />
       </main>
       <Footer />

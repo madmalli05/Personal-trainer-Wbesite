@@ -185,6 +185,36 @@ export const transformations = {
 };
 
 // ---------------------------------------------------------------------------
+// 5c) FAQ  — common questions (click to expand)
+// ---------------------------------------------------------------------------
+export const faq = {
+  kicker: "FAQ",
+  title: "Questions, answered.",
+  items: [
+    {
+      q: "Do I need a gym membership?",
+      a: "Ideally yes — a commercial gym gives us the most options. But I also build effective home and minimal-equipment programs if that's what you've got.",
+    },
+    {
+      q: "I'm a complete beginner. Is this for me?",
+      a: "Absolutely. The Foundation plan is built specifically for beginners — we start with the basics, dial in your technique, and build real habits before pushing intensity.",
+    },
+    {
+      q: "How does online coaching actually work?",
+      a: "You get a custom training and nutrition plan in an app, send form-check videos, and we check in on a set schedule. You message me with questions any time.",
+    },
+    {
+      q: "What if I have an injury or dietary restriction?",
+      a: "Everything is tailored to you. We program around injuries and build your nutrition around your preferences, allergies and lifestyle — no cookie-cutter plans.",
+    },
+    {
+      q: "Is there a minimum commitment?",
+      a: "Coaching is month-to-month. Real change takes time, so I recommend committing to at least 12 weeks, but you're never locked into a long contract.",
+    },
+  ],
+};
+
+// ---------------------------------------------------------------------------
 // 6) CONTACT  — how clients reach you
 // ---------------------------------------------------------------------------
 export const contact = {
