@@ -39,15 +39,24 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Subtle animated gradient glow behind everything */
+/* Living gradient glow behind everything — the blobs drift as you scroll
+   (--sp is the 0→1 scroll progress set by the SmoothScroll provider). */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -2;
   background:
-    radial-gradient(60% 50% at 15% 10%, color-mix(in srgb, var(--accent2) 22%, transparent), transparent 70%),
-    radial-gradient(50% 50% at 85% 80%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%),
+    radial-gradient(
+      60% 50% at calc(15% + var(--sp, 0) * 22%) calc(10% + var(--sp, 0) * 34%),
+      color-mix(in srgb, var(--accent2) 22%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      50% 50% at calc(85% - var(--sp, 0) * 18%) calc(80% - var(--sp, 0) * 42%),
+      color-mix(in srgb, var(--accent) 16%, transparent),
+      transparent 70%
+    ),
     var(--bg);
 }
 

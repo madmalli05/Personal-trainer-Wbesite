@@ -22,7 +22,10 @@ export default function SmoothScroll({ progressRef, children }) {
     if (!lenis) return;
 
     const onScroll = (l) => {
-      if (progressRef) progressRef.current = l.progress ?? 0;
+      const p = l.progress ?? 0;
+      if (progressRef) progressRef.current = p;
+      // Drives the living background glow (see body::before in index.css).
+      document.documentElement.style.setProperty("--sp", p);
       ScrollTrigger.update();
     };
     lenis.on("scroll", onScroll);
@@ -62,7 +65,9 @@ export default function SmoothScroll({ progressRef, children }) {
     if (on) return;
     const update = () => {
       const max = document.documentElement.scrollHeight - window.innerHeight;
-      if (progressRef) progressRef.current = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      if (progressRef) progressRef.current = p;
+      document.documentElement.style.setProperty("--sp", p);
     };
     update();
     window.addEventListener("scroll", update, { passive: true });

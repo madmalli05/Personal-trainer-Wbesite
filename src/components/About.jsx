@@ -4,6 +4,7 @@ import { about } from "../content";
 import Reveal from "./Reveal";
 import Img from "./Img";
 import SplitHeading from "./motion/SplitHeading";
+import Parallax from "./motion/Parallax";
 
 // Counts up from 0 → value once it scrolls into view.
 function Counter({ value, suffix }) {
@@ -52,12 +53,14 @@ export default function About() {
 
         <div className="about-media">
           <Reveal delay={0.08}>
-            <Img
-              className="about-photo"
-              src={about.image}
-              alt={about.imageAlt}
-              shape="portrait"
-            />
+            <Parallax speed={0.7}>
+              <Img
+                className="about-photo"
+                src={about.image}
+                alt={about.imageAlt}
+                shape="portrait"
+              />
+            </Parallax>
           </Reveal>
           <Reveal delay={0.12}>
             <div className="stats">
