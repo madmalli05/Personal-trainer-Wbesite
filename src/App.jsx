@@ -1,8 +1,6 @@
-import { useEffect } from "react";
-import Lenis from "lenis";
+import { lazy, Suspense, useEffect, useRef } from "react";
 import { theme } from "./content";
-import { useScrollProgress } from "./hooks/useScrollProgress";
-import DumbbellScene from "./components/DumbbellScene";
+import SmoothScroll from "./providers/SmoothScroll";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -14,8 +12,13 @@ import Blog from "./components/Blog";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 
+// Code-split the 3D scene (three.js/R3F) out of the initial bundle — it sits
+// behind the content, so a null fallback is invisible while it loads.
+const DumbbellScene = lazy(() => import("./components/DumbbellScene"));
+
 export default function App() {
-  const scrollRef = useScrollProgress();
+  // Shared scroll progress (0→1), fed by SmoothScroll, read by the 3D scene.
+  const progressRef = useRef(0);
 
   // Inject the theme colors from content.js as CSS variables.
   useEffect(() => {
@@ -28,44 +31,11 @@ export default function App() {
     r.setProperty("--muted", theme.muted);
   }, []);
 
-  // Smooth "scroll motion" via Lenis (skipped for reduced-motion users).
-  useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
-
-    const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
-    let raf;
-    const loop = (time) => {
-      lenis.raf(time);
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
-
-    // Make in-page anchor links scroll smoothly through Lenis.
-    const onClick = (e) => {
-      const link = e.target.closest('a[href^="#"]');
-      if (!link) return;
-      const id = link.getAttribute("href");
-      if (id.length > 1) {
-        const el = document.querySelector(id);
-        if (el) {
-          e.preventDefault();
-          lenis.scrollTo(el, { offset: -72 });
-        }
-      }
-    };
-    document.addEventListener("click", onClick);
-
-    return () => {
-      cancelAnimationFrame(raf);
-      document.removeEventListener("click", onClick);
-      lenis.destroy();
-    };
-  }, []);
-
   return (
-    <>
-      <DumbbellScene scrollRef={scrollRef} />
+    <SmoothScroll progressRef={progressRef}>
+      <Suspense fallback={null}>
+        <DumbbellScene scrollRef={progressRef} />
+      </Suspense>
       <Navbar />
       <main className="page">
         <Hero />
@@ -78,6 +48,6 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
-    </>
+    </SmoothScroll>
   );
 }

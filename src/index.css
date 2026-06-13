@@ -26,6 +26,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 80px; /* offset for the fixed navbar on native anchor jumps */
 }
 
 body {
