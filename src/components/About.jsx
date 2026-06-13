@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useInView } from "framer-motion";
 import { about } from "../content";
 import Reveal from "./Reveal";
+import Img from "./Img";
 
 // Counts up from 0 → value once it scrolls into view.
 function Counter({ value, suffix }) {
@@ -50,16 +51,26 @@ export default function About() {
           ))}
         </div>
 
-        <Reveal delay={0.1}>
-          <div className="stats">
-            {about.stats.map((s, i) => (
-              <div className="stat" key={i}>
-                <Counter value={s.value} suffix={s.suffix} />
-                <div className="label">{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </Reveal>
+        <div className="about-media">
+          <Reveal delay={0.08}>
+            <Img
+              className="about-photo"
+              src={about.image}
+              alt={about.imageAlt}
+              shape="portrait"
+            />
+          </Reveal>
+          <Reveal delay={0.12}>
+            <div className="stats">
+              {about.stats.map((s, i) => (
+                <div className="stat" key={i}>
+                  <Counter value={s.value} suffix={s.suffix} />
+                  <div className="label">{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
       </div>
     </section>
   );

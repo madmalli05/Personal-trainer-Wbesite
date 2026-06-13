@@ -1,5 +1,6 @@
 import { results } from "../content";
 import Reveal from "./Reveal";
+import Img from "./Img";
 
 export default function Results() {
   return (
@@ -29,8 +30,13 @@ export default function Results() {
                 </div>
                 <blockquote className="quote">“{t.quote}”</blockquote>
                 <figcaption className="who">
-                  <div className="name">{t.name}</div>
-                  <div className="result">{t.result}</div>
+                  {t.avatar && (
+                    <Img className="avatar" src={t.avatar} alt={t.name} shape="portrait" />
+                  )}
+                  <div>
+                    <div className="name">{t.name}</div>
+                    <div className="result">{t.result}</div>
+                  </div>
                 </figcaption>
               </figure>
             </Reveal>

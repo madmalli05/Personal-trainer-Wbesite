@@ -43,6 +43,10 @@ export const brand = {
 export const about = {
   kicker: "About the Coach",
   title: "I help everyday people build extraordinary physiques.",
+  // Coach photo. Swap this URL for your own (or drop a file in /public and use
+  // "/my-photo.jpg"). If the image ever fails to load, an on-brand placeholder shows.
+  image: "https://picsum.photos/seed/ironforge-coach/900/1100",
+  imageAlt: "Coach Alex Stone in the gym",
   paragraphs: [
     "I'm Alex — a certified strength & physique coach with over a decade in the trenches. I've competed, I've failed, I've rebuilt, and I've coached hundreds of clients to do the same.",
     "My approach is simple: smart programming, sustainable nutrition, and relentless accountability. No gimmicks, no crash diets — just a plan built around your body, your schedule and your goals.",
@@ -126,6 +130,7 @@ export const results = {
       quote:
         "Alex completely rebuilt my training. I'm bigger, stronger and finally know how to eat. Best investment I've ever made in myself.",
       rating: 5,
+      avatar: "https://picsum.photos/seed/marcus-t/200/200", // client photo (swap or remove)
     },
     {
       name: "Priya N.",
@@ -133,6 +138,7 @@ export const results = {
       quote:
         "From zero stage experience to placing top 3. The posing coaching and daily check-ins during prep were a game changer.",
       rating: 5,
+      avatar: "https://picsum.photos/seed/priya-n/200/200",
     },
     {
       name: "Dev R.",
@@ -140,6 +146,7 @@ export const results = {
       quote:
         "I'd failed every diet before this. Sustainable nutrition plus real accountability made it click. Down 42 lbs and still lifting heavy.",
       rating: 5,
+      avatar: "https://picsum.photos/seed/dev-r/200/200",
     },
   ],
 };
