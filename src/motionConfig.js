@@ -11,8 +11,6 @@ export const motion = {
   enabled: true, // master switch for all scripted motion
   reducedMotionRespect: true, // honor the OS "reduce motion" setting
 
-  smooth: { duration: 0.9 }, // Lenis smooth-scroll easing (higher = floatier)
-
   // Scroll-reveal of sections/cards
   reveal: { y: 40, duration: 0.7, stagger: 0.08, ease: "power3.out" },
 
