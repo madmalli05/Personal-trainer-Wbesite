@@ -152,6 +152,39 @@ export const results = {
 };
 
 // ---------------------------------------------------------------------------
+// 5b) TRANSFORMATIONS  — drag-to-reveal before/after sliders
+//     Replace before/after with your client photos (same size looks best).
+// ---------------------------------------------------------------------------
+export const transformations = {
+  kicker: "Transformations",
+  title: "Drag to reveal the results.",
+  subtitle: "Real clients, real coaching blocks. Slide each photo to compare.",
+  items: [
+    {
+      name: "Marcus — 24 week build",
+      before: "https://picsum.photos/seed/marcus-before/900/1100",
+      after: "https://picsum.photos/seed/marcus-after/900/1100",
+      beforeAlt: "Marcus before coaching",
+      afterAlt: "Marcus after 24 weeks",
+    },
+    {
+      name: "Priya — 16 week prep",
+      before: "https://picsum.photos/seed/priya-before/900/1100",
+      after: "https://picsum.photos/seed/priya-after/900/1100",
+      beforeAlt: "Priya before prep",
+      afterAlt: "Priya on stage",
+    },
+    {
+      name: "Dev — 30 week cut",
+      before: "https://picsum.photos/seed/dev-before/900/1100",
+      after: "https://picsum.photos/seed/dev-after/900/1100",
+      beforeAlt: "Dev before cut",
+      afterAlt: "Dev after losing 42 lbs",
+    },
+  ],
+};
+
+// ---------------------------------------------------------------------------
 // 6) CONTACT  — how clients reach you
 // ---------------------------------------------------------------------------
 export const contact = {

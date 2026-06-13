@@ -4,7 +4,7 @@ import Img from "./Img";
 
 export default function Results() {
   return (
-    <section className="section panel-bg" id="results">
+    <section className="section" id="results">
       <div className="container">
         <div className="section-head">
           <Reveal>
