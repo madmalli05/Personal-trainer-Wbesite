@@ -1,7 +1,6 @@
 import { Suspense, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment, Lightformer, ContactShadows, Sparkles } from "@react-three/drei";
-import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
 import { theme } from "../content";
 import { motion as cfg, allowHeavyFx, prefersReducedMotion } from "../motionConfig";
@@ -18,16 +17,15 @@ function Plate({ x, radius, thickness, accent }) {
         <ringGeometry args={[radius * 0.4, radius * 0.62, 48]} />
         <meshStandardMaterial color="#0c0c10" metalness={0.6} roughness={0.5} side={THREE.DoubleSide} />
       </mesh>
-      {/* glowing accent rim — emissive is boosted so Bloom catches it */}
+      {/* accent rim */}
       <mesh>
         <torusGeometry args={[radius * 0.99, thickness * 0.28, 20, 80]} />
         <meshStandardMaterial
           color={accent}
           emissive={accent}
-          emissiveIntensity={1.6}
+          emissiveIntensity={0.45}
           metalness={0.4}
           roughness={0.25}
-          toneMapped={false}
         />
       </mesh>
     </group>
@@ -130,28 +128,34 @@ export default function DumbbellScene({ scrollRef }) {
   return (
     <div id="bg-canvas" aria-hidden="true">
       <Canvas
-        shadows={heavy}
-        dpr={heavy ? [1, 2] : [1, 1.5]}
+        dpr={[1, 1.5]}
         camera={{ position: [0, 0.4, 9.6], fov: 35 }}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       >
         <Suspense fallback={null}>
-          <ambientLight intensity={0.35} />
-          <directionalLight position={[6, 9, 6]} intensity={2.2} castShadow shadow-mapSize={[1024, 1024]} />
-          <pointLight position={[-7, 2, 3]} intensity={48} color={theme.accent} />
-          <pointLight position={[6, -3, 4]} intensity={26} color={theme.accent2} />
+          <ambientLight intensity={0.4} />
+          <directionalLight position={[6, 9, 6]} intensity={2} />
+          <pointLight position={[-7, 2, 3]} intensity={22} color={theme.accent} />
+          <pointLight position={[6, -3, 4]} intensity={16} color={theme.accent2} />
           {/* back rim light for a crisp metallic edge */}
-          <spotLight position={[0, 6, -8]} angle={0.6} penumbra={1} intensity={40} color="#ffffff" />
+          <spotLight position={[0, 6, -8]} angle={0.6} penumbra={1} intensity={20} color="#ffffff" />
 
           <Dumbbell scrollRef={scrollRef} reducedMotion={reducedMotion} />
 
           {heavy && cfg.scene.particles && (
-            <Sparkles count={60} scale={[16, 9, 6]} size={2.4} speed={0.3} opacity={0.5} color={theme.accent} />
+            <Sparkles count={50} scale={[16, 9, 6]} size={2.2} speed={0.25} opacity={0.4} color={theme.accent} />
           )}
 
-          {heavy && (
-            <ContactShadows position={[0, -2.4, 0]} opacity={0.45} scale={16} blur={2.6} far={5} color="#000000" />
-          )}
+          {/* Static (single-frame) contact shadow — cheap grounding, no per-frame cost */}
+          <ContactShadows
+            position={[0, -2.4, 0]}
+            opacity={0.4}
+            scale={16}
+            blur={2.6}
+            far={5}
+            color="#000000"
+            frames={1}
+          />
 
           {/* Self-contained studio reflections (no network/HDRI needed) */}
           <Environment resolution={256}>
@@ -160,13 +164,6 @@ export default function DumbbellScene({ scrollRef }) {
             <Lightformer intensity={1.2} color={theme.accent2} position={[6, -2, 2]} scale={[3, 8, 1]} />
             <Lightformer intensity={1} position={[0, -4, 2]} scale={[10, 4, 1]} />
           </Environment>
-
-          {/* Bloom on the emissive accent rims — desktop only, lazy in this chunk */}
-          {heavy && cfg.scene.bloom && (
-            <EffectComposer disableNormalPass>
-              <Bloom intensity={0.7} luminanceThreshold={0.55} luminanceSmoothing={0.2} mipmapBlur />
-            </EffectComposer>
-          )}
         </Suspense>
       </Canvas>
     </div>

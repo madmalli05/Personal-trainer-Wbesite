@@ -11,24 +11,24 @@ export const motion = {
   enabled: true, // master switch for all scripted motion
   reducedMotionRespect: true, // honor the OS "reduce motion" setting
 
-  smooth: { duration: 1.1 }, // Lenis smooth-scroll easing (higher = floatier)
+  smooth: { duration: 0.9 }, // Lenis smooth-scroll easing (higher = floatier)
 
   // Scroll-reveal of sections/cards
-  reveal: { y: 48, duration: 0.8, stagger: 0.1, ease: "power3.out" },
+  reveal: { y: 40, duration: 0.7, stagger: 0.08, ease: "power3.out" },
 
-  parallax: { depth: 0.14 }, // 0 = off, ~0.2 = strong
+  parallax: { depth: 0.08 }, // 0 = off, ~0.2 = strong
 
-  pins: { hero: true, transformations: true }, // pinned cinematic moments
+  pins: { hero: false, transformations: false }, // pinned scenes off (kept native scroll)
 
   cursor: { enabled: true }, // custom cursor (desktop / fine-pointer only)
-  tilt: { enabled: true, max: 10 }, // 3D card tilt, max degrees
-  magnetic: { enabled: true, strength: 0.45 }, // button magnetism (0–1)
+  tilt: { enabled: true, max: 8 }, // 3D card tilt, max degrees
+  magnetic: { enabled: true, strength: 0.35 }, // button magnetism (0–1)
 
   // 3D dumbbell scene
   scene: {
-    bloom: true, // glow on the accent rims (desktop only)
-    particles: true, // floating atmosphere particles (desktop only)
-    cameraDolly: 0.8, // how much the camera pushes in on scroll
+    bloom: false, // glow on the accent rims (off — was too glowy)
+    particles: false, // floating atmosphere particles (off for performance)
+    cameraDolly: 0.5, // how much the camera pushes in on scroll
   },
 };
 
