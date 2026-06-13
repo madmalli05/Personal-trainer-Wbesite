@@ -10,6 +10,7 @@ import Services from "./components/Services";
 import Transformations from "./components/Transformations";
 import Results from "./components/Results";
 import Faq from "./components/Faq";
+import Blog from "./components/Blog";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 
@@ -73,6 +74,7 @@ export default function App() {
         <Transformations />
         <Results />
         <Faq />
+        <Blog />
         <Contact />
       </main>
       <Footer />

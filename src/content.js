@@ -215,6 +215,60 @@ export const faq = {
 };
 
 // ---------------------------------------------------------------------------
+// 5d) BLOG / JOURNAL  — articles. The full text lives in `body` (an array of
+//     paragraphs) and opens in a popup. Add a post by copying a { ... } block.
+// ---------------------------------------------------------------------------
+export const blog = {
+  kicker: "Journal",
+  title: "Training notes & nutrition breakdowns.",
+  subtitle: "No fluff — just what actually moves the needle.",
+  posts: [
+    {
+      slug: "progressive-overload",
+      title: "Progressive Overload, Explained",
+      date: "2026-05-18",
+      readingTime: "4 min read",
+      image: "https://picsum.photos/seed/blog-overload/1200/675",
+      imageAlt: "Barbell loaded with weight plates",
+      excerpt: "The one principle every good program is secretly built on.",
+      body: [
+        "If your training isn't getting harder over time, your body has no reason to change. Progressive overload simply means gradually increasing the demand on your muscles — more weight, more reps, more sets, or better control.",
+        "The mistake most people make is chasing soreness or novelty instead of progression. Variety feels productive, but the magic is in beating last week's numbers, even by a little.",
+        "Pick a handful of key lifts, log them, and aim to add reps or weight each week. Small, consistent jumps compound into a completely different physique over a year.",
+      ],
+    },
+    {
+      slug: "protein-myths",
+      title: "How Much Protein Do You Actually Need?",
+      date: "2026-04-30",
+      readingTime: "5 min read",
+      image: "https://picsum.photos/seed/blog-protein/1200/675",
+      imageAlt: "Healthy high-protein meal",
+      excerpt: "Cutting through the noise on the most over-debated macro.",
+      body: [
+        "For most people building muscle, somewhere around 0.7–1g of protein per pound of bodyweight per day is plenty. More than that rarely helps, and far less will quietly stall your progress.",
+        "Spread it across 3–4 meals so you're hitting a solid dose each time. Whole foods first, supplements only to fill gaps.",
+        "Consistency beats perfection. Hitting your protein target most days for months matters far more than nailing it exactly every single day.",
+      ],
+    },
+    {
+      slug: "first-12-weeks",
+      title: "What to Expect in Your First 12 Weeks",
+      date: "2026-04-08",
+      readingTime: "6 min read",
+      image: "https://picsum.photos/seed/blog-12weeks/1200/675",
+      imageAlt: "Athlete training in the gym",
+      excerpt: "A realistic timeline of what changes — and when.",
+      body: [
+        "Weeks 1–4 are about learning the lifts and building a routine. You'll feel stronger fast — most of that early jump is your nervous system, not muscle, and that's exactly how it should go.",
+        "Weeks 5–8, the habits stick and the scale and mirror start moving. This is where accountability matters most, because motivation always dips here.",
+        "By week 12, the changes are obvious — to you and everyone around you. The goal was never a quick fix; it's a system you can run for life.",
+      ],
+    },
+  ],
+};
+
+// ---------------------------------------------------------------------------
 // 6) CONTACT  — how clients reach you
 // ---------------------------------------------------------------------------
 export const contact = {
@@ -238,6 +292,8 @@ export const contact = {
 export const nav = [
   { label: "About", href: "#about" },
   { label: "Programs", href: "#programs" },
-  { label: "Results", href: "#results" },
+  { label: "Results", href: "#transformations" },
+  { label: "FAQ", href: "#faq" },
+  { label: "Journal", href: "#blog" },
   { label: "Contact", href: "#contact" },
 ];
