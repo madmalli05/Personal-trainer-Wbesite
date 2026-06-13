@@ -1,107 +1,56 @@
-import { Suspense, useMemo, useRef } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Environment, Lightformer, ContactShadows, Sparkles } from "@react-three/drei";
+import { Environment, Lightformer } from "@react-three/drei";
 import * as THREE from "three";
 import { theme } from "../content";
-import { motion as cfg, allowHeavyFx, prefersReducedMotion } from "../motionConfig";
+import { prefersReducedMotion } from "../motionConfig";
 
-/* A single weight plate (a disc on the bar) with a glowing accent rim. */
-function Plate({ x, radius, thickness, accent }) {
+// Shared materials (created once) — keeps the scene light.
+const STEEL = new THREE.MeshStandardMaterial({ color: "#c7ccd6", metalness: 1, roughness: 0.24 });
+const DARK = new THREE.MeshStandardMaterial({ color: "#2a2d34", metalness: 0.95, roughness: 0.36 });
+const PLATE = new THREE.MeshStandardMaterial({ color: "#141418", metalness: 0.85, roughness: 0.34 });
+const ACCENT = new THREE.MeshStandardMaterial({
+  color: theme.accent,
+  emissive: theme.accent,
+  emissiveIntensity: 0.35,
+  metalness: 0.5,
+  roughness: 0.3,
+});
+
+/* A weight plate (disc on the bar axis = X) with an accent rim. */
+function Plate({ radius = 1, thickness = 0.26 }) {
   return (
-    <group position={[x, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-      <mesh castShadow receiveShadow>
-        <cylinderGeometry args={[radius, radius, thickness, 64]} />
-        <meshStandardMaterial color="#15151a" metalness={0.85} roughness={0.32} />
+    <group rotation={[0, 0, Math.PI / 2]}>
+      <mesh material={PLATE}>
+        <cylinderGeometry args={[radius, radius, thickness, 48]} />
       </mesh>
-      <mesh position={[0, thickness / 2 + 0.001, 0]}>
-        <ringGeometry args={[radius * 0.4, radius * 0.62, 48]} />
-        <meshStandardMaterial color="#0c0c10" metalness={0.6} roughness={0.5} side={THREE.DoubleSide} />
-      </mesh>
-      {/* accent rim */}
-      <mesh>
-        <torusGeometry args={[radius * 0.99, thickness * 0.28, 20, 80]} />
-        <meshStandardMaterial
-          color={accent}
-          emissive={accent}
-          emissiveIntensity={0.45}
-          metalness={0.4}
-          roughness={0.25}
-        />
+      <mesh material={ACCENT}>
+        <torusGeometry args={[radius * 0.99, thickness * 0.26, 16, 64]} />
       </mesh>
     </group>
   );
 }
 
-/* The full dumbbell — choreographed by scroll progress + time + camera dolly. */
-function Dumbbell({ scrollRef, reducedMotion }) {
-  const group = useRef();
-
-  const steel = useMemo(
-    () => new THREE.MeshStandardMaterial({ color: "#c7ccd6", metalness: 1, roughness: 0.22 }),
-    []
-  );
-  const darkSteel = useMemo(
-    () => new THREE.MeshStandardMaterial({ color: "#2a2d34", metalness: 0.95, roughness: 0.35 }),
-    []
-  );
-
-  const plates = useMemo(
-    () => [
-      { d: 1.02, radius: 1.0, thickness: 0.26 },
-      { d: 1.34, radius: 0.82, thickness: 0.24 },
-      { d: 1.62, radius: 0.64, thickness: 0.22 },
-    ],
-    []
-  );
-
-  useFrame((state) => {
-    const g = group.current;
-    if (!g) return;
-    // Reduced motion: hold a clean static pose, no scroll/time-driven movement.
-    if (reducedMotion) return;
-
-    const t = state.clock.elapsedTime;
-    const p = scrollRef?.current ?? 0;
-
-    // Majestic continuous spin in the hero that keeps winding as you scroll.
-    g.rotation.y += (t * 0.18 + p * Math.PI * 3.2 - g.rotation.y) * 0.07;
-    g.rotation.z = THREE.MathUtils.lerp(g.rotation.z, -0.5 + Math.sin(p * Math.PI) * 0.8, 0.05);
-    g.rotation.x = THREE.MathUtils.lerp(g.rotation.x, 0.18 + p * 0.6, 0.05);
-
-    // Travel: large & center-right in the hero, drifting across + shrinking on scroll.
-    g.position.x = THREE.MathUtils.lerp(g.position.x, THREE.MathUtils.lerp(1.7, -2.4, p), 0.05);
-    g.position.y = Math.sin(t * 0.7) * 0.16 - p * 0.5;
-
-    const s = THREE.MathUtils.lerp(1.45, 0.82, p);
-    g.scale.setScalar(THREE.MathUtils.lerp(g.scale.x, s, 0.05));
-
-    // Cinematic camera dolly for depth.
-    const cam = state.camera;
-    const dz = cfg.scene.cameraDolly;
-    cam.position.z += (THREE.MathUtils.lerp(9.6, 9.6 - dz * 2, p) - cam.position.z) * 0.04;
-    cam.position.y += (THREE.MathUtils.lerp(0.4, -0.3, p) - cam.position.y) * 0.04;
-    cam.lookAt(0, 0, 0);
-  });
-
+/* The dumbbell (compact). */
+function Dumbbell() {
   return (
-    <group ref={group} rotation={[0.18, 0, -0.5]} position={[1.7, 0, 0]} scale={1.45}>
-      <mesh rotation={[0, 0, Math.PI / 2]} castShadow material={steel}>
-        <cylinderGeometry args={[0.17, 0.17, 2.1, 32]} />
+    <group scale={0.62}>
+      <mesh rotation={[0, 0, Math.PI / 2]} material={STEEL}>
+        <cylinderGeometry args={[0.17, 0.17, 2.1, 24]} />
       </mesh>
-      <mesh rotation={[0, 0, Math.PI / 2]} castShadow material={darkSteel}>
-        <cylinderGeometry args={[0.185, 0.185, 1.1, 24]} />
-      </mesh>
-
       {[1, -1].map((side) => (
-        <group key={side}>
-          <mesh position={[side * 0.95, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow material={darkSteel}>
-            <cylinderGeometry args={[0.3, 0.3, 0.22, 32]} />
+        <group key={side} position={[side * 1.05, 0, 0]}>
+          <mesh rotation={[0, 0, Math.PI / 2]} material={DARK}>
+            <cylinderGeometry args={[0.3, 0.3, 0.22, 24]} />
           </mesh>
-          {plates.map((pl, i) => (
-            <Plate key={i} x={side * pl.d} radius={pl.radius} thickness={pl.thickness} accent={theme.accent} />
-          ))}
-          <mesh position={[side * 1.82, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow material={steel}>
-            <cylinderGeometry args={[0.5, 0.5, 0.14, 48]} />
+          <group position={[side * 0.3, 0, 0]}>
+            <Plate radius={0.95} thickness={0.26} />
+          </group>
+          <group position={[side * 0.62, 0, 0]}>
+            <Plate radius={0.72} thickness={0.24} />
+          </group>
+          <mesh position={[side * 0.82, 0, 0]} rotation={[0, 0, Math.PI / 2]} material={STEEL}>
+            <cylinderGeometry args={[0.42, 0.42, 0.12, 32]} />
           </mesh>
         </group>
       ))}
@@ -109,60 +58,179 @@ function Dumbbell({ scrollRef, reducedMotion }) {
   );
 }
 
+/* A leaning stack of plates. */
+function PlateStack() {
+  return (
+    <group scale={0.95}>
+      {[-0.33, -0.11, 0.11, 0.33].map((x, i) => (
+        <group key={i} position={[x, 0, 0]}>
+          <Plate radius={1.05} thickness={0.16} />
+        </group>
+      ))}
+    </group>
+  );
+}
+
+/* A kettlebell — bell + arched handle. */
+function Kettlebell() {
+  return (
+    <group scale={0.95}>
+      <mesh material={DARK}>
+        <sphereGeometry args={[0.85, 32, 24]} />
+      </mesh>
+      <mesh position={[0, 0.6, 0]} material={DARK}>
+        <cylinderGeometry args={[0.34, 0.42, 0.22, 24]} />
+      </mesh>
+      <mesh position={[0, 1.05, 0]} material={STEEL}>
+        <torusGeometry args={[0.34, 0.1, 16, 32, Math.PI]} />
+      </mesh>
+      <mesh material={ACCENT}>
+        <torusGeometry args={[0.86, 0.04, 12, 48]} />
+      </mesh>
+    </group>
+  );
+}
+
+/* An olympic barbell with plates on the ends. */
+function Barbell() {
+  return (
+    <group scale={0.62} rotation={[0, 0, 0.15]}>
+      <mesh rotation={[0, 0, Math.PI / 2]} material={STEEL}>
+        <cylinderGeometry args={[0.075, 0.075, 4.2, 20]} />
+      </mesh>
+      {[1, -1].map((side) => (
+        <group key={side} position={[side * 1.7, 0, 0]}>
+          <mesh rotation={[0, 0, Math.PI / 2]} material={DARK}>
+            <cylinderGeometry args={[0.18, 0.18, 0.16, 20]} />
+          </mesh>
+          <group position={[side * 0.22, 0, 0]}>
+            <Plate radius={0.62} thickness={0.16} />
+          </group>
+          <group position={[side * 0.46, 0, 0]}>
+            <Plate radius={0.5} thickness={0.14} />
+          </group>
+        </group>
+      ))}
+    </group>
+  );
+}
+
+/* Wraps an object and gives it a gentle, individual spin. */
+function Floating({ children, position, speed = 0.2, tilt = 0, reducedMotion }) {
+  const ref = useRef();
+  useFrame((state) => {
+    if (!ref.current || reducedMotion) return;
+    ref.current.rotation.y = state.clock.elapsedTime * speed;
+  });
+  return (
+    <group ref={ref} position={position} rotation={[tilt, 0, 0]}>
+      {children}
+    </group>
+  );
+}
+
+/* The rig that flows objects through center on scroll + follows the mouse. */
+function Rig({ scrollRef, pointerRef, reducedMotion }) {
+  const rig = useRef();
+
+  useFrame((state) => {
+    const g = rig.current;
+    if (!g) return;
+    const t = state.clock.elapsedTime;
+    const p = scrollRef?.current ?? 0;
+    const ptr = pointerRef.current;
+    const cam = state.camera;
+
+    if (reducedMotion) {
+      g.position.x = -6; // show the first object (dumbbell), static
+      return;
+    }
+
+    // Scroll: slide the whole rig so each object flows through center in turn,
+    // "introducing" the site section by section.
+    g.position.x = THREE.MathUtils.lerp(g.position.x, THREE.MathUtils.lerp(-6, 6, p), 0.06);
+    g.position.y = Math.sin(t * 0.5) * 0.12;
+
+    // Mouse: the scene tilts toward the cursor (parallax / "follows the user").
+    g.rotation.y = THREE.MathUtils.lerp(g.rotation.y, ptr.x * 0.32, 0.05);
+    g.rotation.x = THREE.MathUtils.lerp(g.rotation.x, -ptr.y * 0.2, 0.05);
+
+    // Camera drifts subtly with the mouse + dollies in a touch on scroll.
+    cam.position.x = THREE.MathUtils.lerp(cam.position.x, ptr.x * 0.7, 0.04);
+    cam.position.y = THREE.MathUtils.lerp(cam.position.y, 0.3 - ptr.y * 0.5, 0.04);
+    cam.position.z = THREE.MathUtils.lerp(cam.position.z, THREE.MathUtils.lerp(10, 8.8, p), 0.04);
+    cam.lookAt(0, 0, 0);
+  });
+
+  // Objects spaced along X; the rig slides them through the viewport on scroll.
+  return (
+    <group ref={rig} position={[-6, 0, 0]}>
+      <Floating position={[6, 0.3, 0]} speed={0.22} reducedMotion={reducedMotion}>
+        <Dumbbell />
+      </Floating>
+      <Floating position={[3, -0.5, -1]} speed={-0.16} tilt={0.4} reducedMotion={reducedMotion}>
+        <PlateStack />
+      </Floating>
+      <Floating position={[0, 0.5, 0.4]} speed={0.18} reducedMotion={reducedMotion}>
+        <Kettlebell />
+      </Floating>
+      <Floating position={[-3, -0.3, -1]} speed={-0.2} reducedMotion={reducedMotion}>
+        <Barbell />
+      </Floating>
+      <Floating position={[-6, 0.4, 0.2]} speed={0.24} tilt={0.5} reducedMotion={reducedMotion}>
+        <Plate radius={1.25} thickness={0.3} />
+      </Floating>
+    </group>
+  );
+}
+
 export default function DumbbellScene({ scrollRef }) {
   const reducedMotion = prefersReducedMotion();
-  const heavy = allowHeavyFx(); // desktop + motion-on: enables bloom/particles/shadows
+  const pointer = useRef({ x: 0, y: 0 });
 
-  // Gracefully skip WebGL entirely if the browser/device can't do it.
-  const webglOK = useMemo(() => {
+  // Track the mouse globally (the canvas itself is pointer-events:none).
+  useEffect(() => {
+    if (reducedMotion) return;
+    const onMove = (e) => {
+      pointer.current.x = (e.clientX / window.innerWidth) * 2 - 1;
+      pointer.current.y = (e.clientY / window.innerHeight) * 2 - 1;
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onMove);
+  }, [reducedMotion]);
+
+  // Gracefully skip WebGL entirely if unsupported.
+  const webglOK = useRef(null);
+  if (webglOK.current === null) {
     try {
       const c = document.createElement("canvas");
-      return !!(window.WebGLRenderingContext && (c.getContext("webgl") || c.getContext("experimental-webgl")));
+      webglOK.current = !!(window.WebGLRenderingContext && (c.getContext("webgl") || c.getContext("experimental-webgl")));
     } catch {
-      return false;
+      webglOK.current = false;
     }
-  }, []);
-
-  if (!webglOK) return null;
+  }
+  if (!webglOK.current) return null;
 
   return (
     <div id="bg-canvas" aria-hidden="true">
       <Canvas
         dpr={[1, 1.5]}
-        camera={{ position: [0, 0.4, 9.6], fov: 35 }}
+        camera={{ position: [0, 0.3, 10], fov: 35 }}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       >
         <Suspense fallback={null}>
-          <ambientLight intensity={0.4} />
-          <directionalLight position={[6, 9, 6]} intensity={2} />
-          <pointLight position={[-7, 2, 3]} intensity={22} color={theme.accent} />
-          <pointLight position={[6, -3, 4]} intensity={16} color={theme.accent2} />
-          {/* back rim light for a crisp metallic edge */}
-          <spotLight position={[0, 6, -8]} angle={0.6} penumbra={1} intensity={20} color="#ffffff" />
+          <ambientLight intensity={0.45} />
+          <directionalLight position={[6, 9, 6]} intensity={1.8} />
+          <pointLight position={[-7, 2, 3]} intensity={20} color={theme.accent} />
+          <pointLight position={[6, -3, 4]} intensity={14} color={theme.accent2} />
 
-          <Dumbbell scrollRef={scrollRef} reducedMotion={reducedMotion} />
-
-          {heavy && cfg.scene.particles && (
-            <Sparkles count={50} scale={[16, 9, 6]} size={2.2} speed={0.25} opacity={0.4} color={theme.accent} />
-          )}
-
-          {/* Static (single-frame) contact shadow — cheap grounding, no per-frame cost */}
-          <ContactShadows
-            position={[0, -2.4, 0]}
-            opacity={0.4}
-            scale={16}
-            blur={2.6}
-            far={5}
-            color="#000000"
-            frames={1}
-          />
+          <Rig scrollRef={scrollRef} pointerRef={pointer} reducedMotion={reducedMotion} />
 
           {/* Self-contained studio reflections (no network/HDRI needed) */}
           <Environment resolution={256}>
             <Lightformer intensity={2} position={[0, 4, -6]} scale={[12, 6, 1]} />
-            <Lightformer intensity={1.8} color={theme.accent} position={[-6, 1, 2]} scale={[3, 8, 1]} />
+            <Lightformer intensity={1.6} color={theme.accent} position={[-6, 1, 2]} scale={[3, 8, 1]} />
             <Lightformer intensity={1.2} color={theme.accent2} position={[6, -2, 2]} scale={[3, 8, 1]} />
-            <Lightformer intensity={1} position={[0, -4, 2]} scale={[10, 4, 1]} />
           </Environment>
         </Suspense>
       </Canvas>

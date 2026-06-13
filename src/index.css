@@ -61,6 +61,31 @@ body::before {
     var(--bg);
 }
 
+/* Abstract drifting "energy" layer — soft, blurred accent orbs that slowly
+   roam behind the 3D scene for premium depth. Disabled for reduced-motion. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: -25%;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 38% at 28% 32%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 60%),
+    radial-gradient(34% 34% at 72% 68%, color-mix(in srgb, var(--accent2) 12%, transparent), transparent 60%);
+  filter: blur(40px);
+  animation: energyDrift 26s ease-in-out infinite alternate;
+}
+@keyframes energyDrift {
+  0% {
+    transform: translate3d(-3%, -2%, 0) scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate3d(4%, 3%, 0) scale(1.12);
+    opacity: 1;
+  }
+}
+
 a {
   color: inherit;
   text-decoration: none;
