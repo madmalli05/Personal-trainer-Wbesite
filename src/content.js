@@ -276,7 +276,11 @@ export const contact = {
   title: "Ready to build something serious?",
   subtitle:
     "Tell me about your goals and I'll get back to you within 24 hours with the right plan for you.",
-  email: "coach@ironforge.com", // the form sends here (opens the visitor's email app)
+  // To receive form submissions straight to your inbox, create a free form at
+  // formspree.io and paste the id here (the part after /f/, e.g. "mwkgabcd").
+  // Leave it "" and the form will open the visitor's email app instead.
+  formspreeId: "",
+  email: "coach@ironforge.com", // shown as a contact link + used by the email-app fallback
   phone: "+1 (555) 123-4567",
   location: "Iron Forge Gym · Austin, TX",
   socials: [

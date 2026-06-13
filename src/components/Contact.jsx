@@ -4,18 +4,45 @@ import Reveal from "./Reveal";
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState("idle"); // idle | sending | success | error
+  const [error, setError] = useState("");
 
   const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-  // No backend needed: open the visitor's email app with a pre-filled message
-  // addressed to you. Swap this for a form service (Formspree, etc.) anytime.
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`Coaching enquiry from ${form.name || "website"}`);
-    const body = encodeURIComponent(
-      `Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`
-    );
-    window.location.href = `mailto:${contact.email}?subject=${subject}&body=${body}`;
+
+    // Fallback when no Formspree id is configured: open the visitor's email app.
+    if (!contact.formspreeId) {
+      const subject = encodeURIComponent(`Coaching enquiry from ${form.name || "website"}`);
+      const body = encodeURIComponent(
+        `Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`
+      );
+      window.location.href = `mailto:${contact.email}?subject=${subject}&body=${body}`;
+      return;
+    }
+
+    setStatus("sending");
+    setError("");
+    try {
+      const data = new FormData(e.target); // collects name, email, message, _gotcha
+      const res = await fetch(`https://formspree.io/f/${contact.formspreeId}`, {
+        method: "POST",
+        body: data,
+        headers: { Accept: "application/json" },
+      });
+      if (res.ok) {
+        setStatus("success");
+        setForm({ name: "", email: "", message: "" });
+      } else {
+        const json = await res.json().catch(() => ({}));
+        setError(json?.errors?.map((er) => er.message).join(", ") || "Something went wrong. Please try again.");
+        setStatus("error");
+      }
+    } catch {
+      setError("Network error. Please try again.");
+      setStatus("error");
+    }
   };
 
   return (
@@ -90,9 +117,36 @@ export default function Contact() {
                   required
                 />
               </div>
-              <button type="submit" className="btn btn-primary" style={{ justifyContent: "center" }}>
-                Send Message →
+
+              {/* Honeypot: hidden from people, tempting to bots. */}
+              <input
+                type="text"
+                name="_gotcha"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="hp-field"
+              />
+
+              <button
+                type="submit"
+                className="btn btn-primary"
+                style={{ justifyContent: "center" }}
+                disabled={status === "sending"}
+              >
+                {status === "sending" ? "Sending…" : "Send Message →"}
               </button>
+
+              <p
+                className={`form-status ${status === "error" ? "error" : ""} ${
+                  status === "success" ? "success" : ""
+                }`}
+                role="status"
+                aria-live="polite"
+              >
+                {status === "success" && "Thanks — I'll reply within 24 hours."}
+                {status === "error" && error}
+              </p>
             </form>
           </Reveal>
         </div>
