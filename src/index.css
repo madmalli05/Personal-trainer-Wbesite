@@ -277,7 +277,10 @@ button {
   display: block;
   overflow: hidden;
 }
-.hero-title .line:nth-child(2) {
+.hero-title .line > span {
+  display: block;
+}
+.hero-title .line:nth-child(2) > span {
   color: transparent;
   -webkit-text-stroke: 2px var(--accent);
 }
