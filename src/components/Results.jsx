@@ -1,6 +1,7 @@
 import { results } from "../content";
 import Reveal from "./Reveal";
 import Img from "./Img";
+import TiltCard from "./motion/TiltCard";
 
 export default function Results() {
   return (
@@ -23,6 +24,7 @@ export default function Results() {
         <div className="testimonials">
           {results.testimonials.map((t, i) => (
             <Reveal key={i} delay={i * 0.1}>
+             <TiltCard max={7}>
               <figure className="testimonial">
                 <div className="stars" aria-label={`${t.rating} out of 5 stars`}>
                   {"★".repeat(t.rating)}
@@ -39,6 +41,7 @@ export default function Results() {
                   </div>
                 </figcaption>
               </figure>
+             </TiltCard>
             </Reveal>
           ))}
         </div>

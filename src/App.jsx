@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useRef } from "react";
 import { theme } from "./content";
 import SmoothScroll from "./providers/SmoothScroll";
+import CustomCursor from "./components/motion/CustomCursor";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -33,6 +34,7 @@ export default function App() {
 
   return (
     <SmoothScroll progressRef={progressRef}>
+      <CustomCursor />
       <Suspense fallback={null}>
         <DumbbellScene scrollRef={progressRef} />
       </Suspense>

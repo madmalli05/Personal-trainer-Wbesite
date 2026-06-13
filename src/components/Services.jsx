@@ -1,5 +1,6 @@
 import { programs } from "../content";
 import Reveal from "./Reveal";
+import TiltCard from "./motion/TiltCard";
 
 function Check() {
   return (
@@ -30,6 +31,7 @@ export default function Services() {
         <div className="plans">
           {programs.plans.map((plan, i) => (
             <Reveal key={plan.name} delay={i * 0.1}>
+             <TiltCard>
               <div className={`plan ${plan.featured ? "featured" : ""}`}>
                 {plan.featured && <span className="badge">Most Popular</span>}
                 <h3>{plan.name}</h3>
@@ -53,6 +55,7 @@ export default function Services() {
                   {plan.cta}
                 </a>
               </div>
+             </TiltCard>
             </Reveal>
           ))}
         </div>

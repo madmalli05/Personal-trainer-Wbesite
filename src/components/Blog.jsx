@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { blog } from "../content";
 import Reveal from "./Reveal";
 import Img from "./Img";
+import TiltCard from "./motion/TiltCard";
 
 function formatDate(iso) {
   try {
@@ -59,6 +60,7 @@ export default function Blog() {
         <div className="blog-grid">
           {blog.posts.map((post, i) => (
             <Reveal key={post.slug} delay={i * 0.1}>
+             <TiltCard>
               <article className="blog-card">
                 <Img className="blog-thumb" src={post.image} alt={post.imageAlt} />
                 <div className="blog-card-body">
@@ -73,6 +75,7 @@ export default function Blog() {
                   </button>
                 </div>
               </article>
+             </TiltCard>
             </Reveal>
           ))}
         </div>

@@ -145,6 +145,73 @@ button {
   border-color: var(--accent);
 }
 
+/* ----- Custom cursor (desktop / fine-pointer only; toggled by JS) ----- */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: 0;
+}
+.cursor-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--accent);
+}
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid color-mix(in srgb, var(--accent) 65%, transparent);
+  transition: width 0.25s ease, height 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+.cursor-ring.hover {
+  width: 56px;
+  height: 56px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.cursor-ring.down {
+  width: 26px;
+  height: 26px;
+}
+body.cursor-active .cursor-dot,
+body.cursor-active .cursor-ring {
+  opacity: 1;
+}
+/* Hide the native cursor while the custom one is active (keep text I-beam in fields) */
+body.cursor-active,
+body.cursor-active * {
+  cursor: none;
+}
+body.cursor-active input,
+body.cursor-active textarea {
+  cursor: text;
+}
+
+/* ----- Tilt cards (3D hover) ----- */
+.tilt {
+  position: relative;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+.tilt-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+/* When a card is inside a tilt wrapper, the wrapper owns the movement —
+   keep the card's color/shadow hover, drop its translate so they don't stack. */
+.tilt .plan:hover,
+.tilt .blog-card:hover,
+.tilt .testimonial:hover {
+  transform: none;
+}
+
 /* ----- Fixed 3D canvas behind content ----- */
 #bg-canvas {
   position: fixed;
