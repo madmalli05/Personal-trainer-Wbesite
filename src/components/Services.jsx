@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { programs } from "../content";
 import Reveal from "./Reveal";
 import TiltCard from "./motion/TiltCard";
@@ -47,12 +48,22 @@ export default function Services() {
                     </li>
                   ))}
                 </ul>
-                <a
-                  href="#apply"
-                  className={`btn ${plan.featured ? "btn-primary" : "btn-ghost"}`}
-                >
-                  {plan.cta}
-                </a>
+                <div className="plan-actions">
+                  {/* Primary path: apply (the form). Always works on any page. */}
+                  <Link to="/apply" className="btn btn-primary">
+                    {programs.applyLabel}
+                  </Link>
+                  {/* Optional direct-buy path. */}
+                  <a
+                    href={plan.buyUrl || "#"}
+                    className="btn btn-ghost plan-buy"
+                    {...(plan.buyUrl && plan.buyUrl.startsWith("http")
+                      ? { target: "_blank", rel: "noreferrer" }
+                      : {})}
+                  >
+                    {programs.buyLabel}
+                  </a>
+                </div>
               </div>
              </TiltCard>
             </Reveal>

@@ -69,8 +69,13 @@ export const about = {
 // ---------------------------------------------------------------------------
 export const programs = {
   kicker: "Programs",
-  title: "Choose your path to the platform.",
-  subtitle: "Every plan is fully customized to your body, goals and experience level.",
+  title: "Coaching, engineered for you.",
+  subtitle: "Every plan is fully customized. The main path is to apply — but you can start instantly if you're ready.",
+  // The primary action everywhere is "Apply" (the form). `buyUrl` is the
+  // optional direct-buy path — paste your Stripe/Gumroad/checkout link, or
+  // leave "#" to hide nothing (it just won't go anywhere yet).
+  applyLabel: "Apply Now",
+  buyLabel: "Start Instantly",
   plans: [
     {
       name: "Foundation",
@@ -84,7 +89,7 @@ export const programs = {
         "Form-check video reviews",
         "Monthly check-in & adjustments",
       ],
-      cta: "Get Started",
+      buyUrl: "#",
     },
     {
       name: "Hypertrophy",
@@ -99,7 +104,7 @@ export const programs = {
         "24/7 messaging support",
         "Supplement protocol",
       ],
-      cta: "Most Popular",
+      buyUrl: "#",
     },
     {
       name: "Stage Ready",
@@ -114,7 +119,7 @@ export const programs = {
         "Daily check-ins as you near the show",
         "Off-season reverse diet plan",
       ],
-      cta: "Apply Now",
+      buyUrl: "#",
     },
   ],
 };
@@ -275,17 +280,20 @@ export const blog = {
 // 6) CONTACT  — how clients reach you
 // ---------------------------------------------------------------------------
 export const contact = {
-  kicker: "Get Started",
-  title: "Ready to build something serious?",
+  kicker: "Apply for Coaching",
+  title: "Start your transformation.",
   subtitle:
-    "Tell me about your goals and I'll get back to you within 24 hours with the right plan for you.",
+    "Applications only — tell me about your goals and I'll reply within 24 hours with the right path for you. (Prefer to buy instantly? See Programs.)",
   // To receive form submissions straight to your inbox, create a free form at
   // formspree.io and paste the id here (the part after /f/, e.g. "mwkgabcd").
   // Leave it "" and the form will open the visitor's email app instead.
   formspreeId: "",
-  email: "coach@ironforge.com", // shown as a contact link + used by the email-app fallback
+  email: "coach@madtrains.com", // shown as a contact link + used by the email-app fallback
   phone: "+1 (555) 123-4567",
-  location: "Iron Forge Gym · Austin, TX",
+  location: "Online worldwide · In-person by request",
+  // Dropdown options for the application form (edit freely):
+  experienceLevels: ["Complete beginner", "Some training experience", "Intermediate", "Advanced / competitor"],
+  services: ["Not sure yet — help me choose", "Foundation", "Hypertrophy", "Stage Ready", "Other / brand enquiry"],
   socials: [
     { label: "Instagram", href: "https://instagram.com/" },
     { label: "YouTube", href: "https://youtube.com/" },

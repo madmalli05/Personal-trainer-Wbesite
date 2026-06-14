@@ -5,7 +5,8 @@ import SplitHeading from "./motion/SplitHeading";
 import MagneticButton from "./motion/MagneticButton";
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const empty = { name: "", email: "", goal: "", experience: "", service: "", message: "" };
+  const [form, setForm] = useState(empty);
   const [status, setStatus] = useState("idle"); // idle | sending | success | error
   const [error, setError] = useState("");
 
@@ -16,9 +17,10 @@ export default function Contact() {
 
     // Fallback when no Formspree id is configured: open the visitor's email app.
     if (!contact.formspreeId) {
-      const subject = encodeURIComponent(`Coaching enquiry from ${form.name || "website"}`);
+      const subject = encodeURIComponent(`Coaching application — ${form.name || "website"}`);
       const body = encodeURIComponent(
-        `Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`
+        `Name: ${form.name}\nEmail: ${form.email}\nGoal: ${form.goal}\n` +
+          `Experience: ${form.experience}\nPreferred service: ${form.service}\n\n${form.message}`
       );
       window.location.href = `mailto:${contact.email}?subject=${subject}&body=${body}`;
       return;
@@ -35,7 +37,7 @@ export default function Contact() {
       });
       if (res.ok) {
         setStatus("success");
-        setForm({ name: "", email: "", message: "" });
+        setForm(empty);
       } else {
         const json = await res.json().catch(() => ({}));
         setError(json?.errors?.map((er) => er.message).join(", ") || "Something went wrong. Please try again.");
@@ -107,13 +109,47 @@ export default function Contact() {
                 />
               </div>
               <div className="field">
-                <label htmlFor="message">Your goals</label>
+                <label htmlFor="goal">Your main goal</label>
+                <input
+                  id="goal"
+                  name="goal"
+                  value={form.goal}
+                  onChange={onChange}
+                  placeholder="e.g. build muscle, lose fat, get stage-ready"
+                />
+              </div>
+              <div className="field-row">
+                <div className="field">
+                  <label htmlFor="experience">Experience level</label>
+                  <select id="experience" name="experience" value={form.experience} onChange={onChange}>
+                    <option value="">Select…</option>
+                    {contact.experienceLevels.map((x) => (
+                      <option key={x} value={x}>
+                        {x}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="field">
+                  <label htmlFor="service">Preferred service</label>
+                  <select id="service" name="service" value={form.service} onChange={onChange}>
+                    <option value="">Select…</option>
+                    {contact.services.map((x) => (
+                      <option key={x} value={x}>
+                        {x}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="field">
+                <label htmlFor="message">Anything else?</label>
                 <textarea
                   id="message"
                   name="message"
                   value={form.message}
                   onChange={onChange}
-                  placeholder="Tell me about your goals, experience and timeline..."
+                  placeholder="Training history, injuries, timeline, questions…"
                   required
                 />
               </div>

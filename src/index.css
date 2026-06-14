@@ -605,9 +605,17 @@ body.cursor-active textarea {
   color: var(--accent);
 }
 .plan .btn {
-  margin-top: auto;
   width: 100%;
   justify-content: center;
+}
+.plan-actions {
+  margin-top: auto;
+  display: grid;
+  gap: 0.55rem;
+}
+.plan-buy {
+  font-size: 0.88rem;
+  padding-block: 0.7rem;
 }
 @media (max-width: 880px) {
   .plans {
@@ -1042,7 +1050,8 @@ body.cursor-active textarea {
   letter-spacing: 0.03em;
 }
 .field input,
-.field textarea {
+.field textarea,
+.field select {
   width: 100%;
   background: rgba(0, 0, 0, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.14);
@@ -1053,14 +1062,38 @@ body.cursor-active textarea {
   font-size: 1rem;
   transition: border-color 0.2s ease;
 }
+.field select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+    linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 1.2em, calc(100% - 13px) 1.2em;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+.field select option {
+  background: #0c1018;
+  color: var(--text);
+}
 .field input:focus,
-.field textarea:focus {
+.field textarea:focus,
+.field select:focus {
   outline: none;
   border-color: var(--accent);
 }
 .field textarea {
   resize: vertical;
-  min-height: 130px;
+  min-height: 120px;
+}
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem;
+}
+@media (max-width: 520px) {
+  .field-row {
+    grid-template-columns: 1fr;
+  }
 }
 .hp-field {
   position: absolute;
