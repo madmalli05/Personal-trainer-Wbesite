@@ -1,39 +1,50 @@
-# 🏋️ IRON FORGE — Scroll-Motion Training Website
+# 🔵 MadTrains — Premium Fitness Brand Website
 
-A bold, modern, scroll-driven website for a bodybuilding / personal-training
-business, featuring an **interactive 3D dumbbell** that spins and drifts across
-the screen as you scroll.
+A cinematic, scroll-driven **fitness brand** website: a long-scroll homepage plus
+dedicated pages, an interactive **3D gym scene** (dumbbell, plates, kettlebell,
+barbell, body silhouette) that flows through as you scroll and follows your mouse,
+and a high-converting **application form** as the primary goal.
 
-Built with **React + Vite**, **Three.js** (`@react-three/fiber` + `drei` +
-`postprocessing`), **GSAP + ScrollTrigger** (scroll storytelling, pins, parallax,
-split-text), **Lenis** (smooth scrolling) and **Framer Motion** (UI motion).
-Includes a custom cursor, magnetic buttons, 3D tilt cards and a cinematic,
-scroll-choreographed 3D dumbbell.
+Built with **React + Vite**, **React Router**, **Three.js** (`@react-three/fiber`
++ `drei`), **GSAP + ScrollTrigger** (split-text, parallax), and **Framer Motion**
+(UI motion). Custom cursor, magnetic buttons, 3D tilt cards, native smooth scroll.
+
+> **Theme:** black + deep electric-blue + clean white. Apple-clean type, Nike energy.
 
 ---
 
-## ✏️ How to edit your content (the important part)
+## ⭐ Where to edit everything (quick reference)
 
-**You only need to edit one file:** [`src/content.js`](src/content.js).
-
-Open it and change the placeholder text, prices, testimonials, contact details
-and colors. Everything is clearly labelled with comments. Save the file and the
-website updates instantly while it's running.
-
-What you can change there:
-
-| Section | What you edit |
+| You want to change… | Edit this |
 |--------|----------------|
-| `theme` | Colors for the whole site (accent, background, text…) |
-| `brand` | Business name, your name, hero headline, tagline, buttons |
-| `about` | Your bio, **coach photo** (`image`) + the stats that count up on scroll |
-| `programs` | Coaching plans, prices and features (`featured: true` highlights one) |
-| `transformations` | **Before/after slider** photos (`before`/`after` per client) |
-| `results` | Testimonials + client **avatars** |
-| `faq` | Frequently-asked questions (click to expand) |
-| `blog` | **Journal articles** — `excerpt` for the card, `body` (array of paragraphs) for the popup |
-| `contact` | Email, phone, location, socials + **`formspreeId`** (see below) |
-| `nav` | The top menu links |
+| **Brand name / logo** | `brand.name`, `brand.nameFirst`, `brand.nameAccent` in [`src/content.js`](src/content.js) (+ `<title>` in `index.html`) |
+| **Colors / theme** | `theme` in `content.js` (accent, accent2, bg, panel, text, muted) |
+| **Photos / videos** | The `image`/`before`/`after`/`avatar` URL fields in `content.js` (or drop files in `/public` and use `"/my-file.jpg"`) |
+| **Programs / prices** | `programs.plans` in `content.js` (name, price, features, `featured`, `buyUrl`) |
+| **Contact / application form** | `contact` in `content.js` (email, `formspreeId`, dropdown options) |
+| **Section text** | Each section's object in `content.js` (`about`, `method`, `philosophy`, `resources`, `results`, `faq`, `blog`…) |
+| **Animation intensity** | [`src/motionConfig.js`](src/motionConfig.js) (reveals, parallax, cursor, tilt, magnetic, pins) |
+| **3D objects / scene** | [`src/components/DumbbellScene.jsx`](src/components/DumbbellScene.jsx) (object list in `Rig`, geometry components, lighting) |
+| **Pages / nav** | `nav` + `pages` in `content.js`; routes in [`src/App.jsx`](src/App.jsx) |
+
+## ✏️ Content lives in one file: `src/content.js`
+
+| Key | What you edit |
+|--------|----------------|
+| `theme` | Colors for the whole site |
+| `brand` | Name, two-tone logo, hero headline, tagline, CTAs |
+| `socialProof` | Trust band metrics (animated counters) |
+| `about` | Coach story, **photo** (`image`), stats |
+| `programs` | Plans, prices, features, `buyUrl` (direct-buy link), apply/buy labels |
+| `method` | The 6-step coaching process |
+| `philosophy` | Training principles |
+| `resources` | "Beyond coaching" pillars (nutrition, challenges, app…) |
+| `transformations` | Before/after slider photos |
+| `results` | Testimonials + avatars |
+| `faq` | Expandable Q&A |
+| `blog` | Journal articles (`body` = paragraphs shown in the popup) |
+| `contact` | Email, socials, `formspreeId`, form dropdown options |
+| `nav` / `pages` | Top-menu section links / dedicated page routes |
 
 ### Photos
 Every photo is just a URL in `content.js`. The defaults pull real stock photos
@@ -112,20 +123,26 @@ Netlify, or even a subfolder. No server or database is required.
 
 ```
 index.html              Page shell + SEO tags + fonts
+vercel.json             SPA routing rewrite (for deploy)
 src/
-  content.js            ← EDIT THIS: all your text, prices, colors
-  motionConfig.js       ← tune animation intensity (durations, pins, effects)
+  content.js            ← EDIT THIS: all your text, prices, colors, media
+  motionConfig.js       ← tune animation intensity (reveals, cursor, tilt, pins)
   index.css             Design system / styles (rarely need to touch)
-  App.jsx               Ties everything together
+  App.jsx               Router + persistent layout (nav, footer, 3D, cursor)
   main.jsx              App entry point
   lib/gsap.js           Central GSAP plugin registration
   providers/
-    SmoothScroll.jsx    Lenis smooth scroll synced to GSAP ScrollTrigger
+    SmoothScroll.jsx    Native scroll + scroll-progress tracking for the 3D
+  pages/                One file per route:
+    Home.jsx (long scroll) AboutPage ProgramsPage TransformationsPage
+    JournalPage ApplyPage PhilosophyPage
   components/
-    DumbbellScene.jsx   The cinematic 3D dumbbell (lazy-loaded)
-    Navbar.jsx  Hero.jsx  About.jsx  Services.jsx  Transformations.jsx
-    Results.jsx  Faq.jsx  Blog.jsx  Contact.jsx  Footer.jsx
-    Img.jsx  BeforeAfter.jsx  Reveal.jsx
+    DumbbellScene.jsx   The 3D gym scene (lazy-loaded): dumbbell, plates,
+                        kettlebell, barbell, body silhouette
+    Hero.jsx SocialProof.jsx About.jsx Services.jsx Method.jsx
+    Transformations.jsx Results.jsx Philosophy.jsx Resources.jsx
+    Blog.jsx Faq.jsx Contact.jsx  Navbar.jsx Footer.jsx PageShell.jsx
+    Img.jsx Counter.jsx BeforeAfter.jsx Reveal.jsx RouteScroll.jsx
     motion/             Reusable motion primitives:
       SplitHeading.jsx  MagneticButton.jsx  TiltCard.jsx
       CustomCursor.jsx  Parallax.jsx  usePin.js
