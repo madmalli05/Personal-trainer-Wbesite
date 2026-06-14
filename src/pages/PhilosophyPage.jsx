@@ -1,16 +1,18 @@
 import PageShell from "../components/PageShell";
-import About from "../components/About";
+import Philosophy from "../components/Philosophy";
+import Method from "../components/Method";
+import Resources from "../components/Resources";
 
-// Stage 3 adds a dedicated Training Philosophy section; for now this page
-// reuses the About section so the route works end-to-end.
 export default function PhilosophyPage() {
   return (
     <PageShell
       kicker="Philosophy"
       title="Train With Intent"
-      subtitle="The principles behind every MadTrains program."
+      subtitle="The principles and the system behind every MadTrains program."
     >
-      <About />
+      <Philosophy />
+      <Method />
+      <Resources />
     </PageShell>
   );
 }

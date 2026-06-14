@@ -294,6 +294,69 @@ export const contact = {
 };
 
 // ---------------------------------------------------------------------------
+// 6b) SOCIAL PROOF  — the trust band under the hero (punchy brand metrics)
+// ---------------------------------------------------------------------------
+export const socialProof = {
+  trustLine: "Trusted by everyday lifters, athletes and busy professionals.",
+  stats: [
+    { value: 500, suffix: "+", label: "Clients Coached" },
+    { value: 12, suffix: "k", label: "Sessions Programmed" },
+    { value: 98, suffix: "%", label: "Would Recommend" },
+    { value: 4.9, suffix: "★", label: "Average Rating", decimals: 1 },
+  ],
+};
+
+// ---------------------------------------------------------------------------
+// 6c) COACHING METHOD  — the step-by-step process
+// ---------------------------------------------------------------------------
+export const method = {
+  kicker: "The Method",
+  title: "How MadTrains works.",
+  subtitle: "A clear, proven system — from first application to lasting results.",
+  steps: [
+    { n: "01", title: "Apply", text: "Tell me your goals, history and schedule. I only take clients I can genuinely help." },
+    { n: "02", title: "Assessment", text: "We map your starting point — strength, mobility, nutrition and lifestyle." },
+    { n: "03", title: "Your Plan", text: "A fully custom training + nutrition blueprint built around your life." },
+    { n: "04", title: "Train", text: "Follow the plan in-app with video guidance and form checks." },
+    { n: "05", title: "Check-ins", text: "Regular reviews and adjustments keep progress relentless." },
+    { n: "06", title: "Results", text: "We hit the goal, then set the next one. This is a system for life." },
+  ],
+};
+
+// ---------------------------------------------------------------------------
+// 6d) PHILOSOPHY  — the principles behind every program
+// ---------------------------------------------------------------------------
+export const philosophy = {
+  kicker: "Philosophy",
+  title: "Train with intent.",
+  subtitle: "No gimmicks. No crash diets. Just principles that actually work.",
+  principles: [
+    { title: "Progressive Overload", text: "Real change comes from doing measurably more over time. We track it and beat it." },
+    { title: "Sustainable Nutrition", text: "Food you enjoy, structured to your goals. Plans you can actually keep." },
+    { title: "Strength First", text: "A strong base makes everything — size, conditioning, longevity — easier." },
+    { title: "Relentless Accountability", text: "The plan is only half of it. Showing up, every week, is where it's won." },
+  ],
+};
+
+// ---------------------------------------------------------------------------
+// 6e) BEYOND COACHING  — broader brand pillars (nutrition, resources, etc.)
+//     Each card can link out (set `href`) — leave "#" for now.
+// ---------------------------------------------------------------------------
+export const resources = {
+  kicker: "Beyond Coaching",
+  title: "More than a trainer — a brand.",
+  subtitle: "MadTrains is building a complete fitness ecosystem.",
+  items: [
+    { tag: "Nutrition", title: "MadFuel Nutrition", text: "Macro guides, recipes and supplement protocols that fit real life.", href: "#" },
+    { tag: "Standards", title: "Strength Standards", text: "Know exactly where you rank and what to chase next.", href: "#" },
+    { tag: "Free", title: "Free Resources", text: "Starter programs, mobility routines and training guides — on the house.", href: "#" },
+    { tag: "Challenge", title: "30-Day Challenges", text: "Community challenges to build momentum and habits that stick.", href: "#" },
+    { tag: "Community", title: "The MadTrains Community", text: "Train alongside people chasing the same standard.", href: "#" },
+    { tag: "Coming Soon", title: "The MadTrains App", text: "Everything — training, nutrition, check-ins — in one place. In the works.", href: "#" },
+  ],
+};
+
+// ---------------------------------------------------------------------------
 // 7) NAVIGATION  — the links in the top menu (must match section ids)
 // ---------------------------------------------------------------------------
 export const nav = [

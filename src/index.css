@@ -1094,6 +1094,218 @@ body.cursor-active textarea {
 }
 
 /* ==========================================================================
+   SOCIAL PROOF (trust band)
+   ========================================================================== */
+.social-proof {
+  padding-block: clamp(2.5rem, 6vw, 4.5rem);
+}
+.trust-line {
+  text-align: center;
+  color: var(--muted);
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  font-weight: 600;
+  margin-bottom: 2.5rem;
+}
+.trust-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+.trust-stat {
+  text-align: center;
+  padding: 1.2rem 1rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+.trust-stat:first-child {
+  border-left: 0;
+}
+.trust-stat .num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 6vw, 3.8rem);
+  line-height: 1;
+  color: var(--text);
+}
+.trust-stat .label {
+  margin-top: 0.5rem;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+@media (max-width: 680px) {
+  .trust-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .trust-stat:nth-child(odd) {
+    border-left: 0;
+  }
+}
+
+/* ==========================================================================
+   METHOD (process steps)
+   ========================================================================== */
+.method-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+}
+.method-grid > * {
+  height: 100%;
+}
+.method-step {
+  position: relative;
+  height: 100%;
+  background: var(--panel);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: var(--radius);
+  padding: 1.8rem;
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+}
+.method-step::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(var(--accent), transparent);
+}
+.method-n {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+}
+.method-step h3 {
+  font-size: 1.3rem;
+  margin: 0.4rem 0 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.method-step p {
+  color: var(--muted);
+  font-size: 0.97rem;
+}
+@media (max-width: 860px) {
+  .method-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .method-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   PHILOSOPHY (principles)
+   ========================================================================== */
+.principles-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.2rem;
+}
+.principles-grid > * {
+  height: 100%;
+}
+.principle-card {
+  height: 100%;
+  background: var(--panel);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: var(--radius);
+  padding: 1.7rem;
+  backdrop-filter: blur(10px);
+}
+.principle-index {
+  font-family: var(--font-display);
+  color: var(--accent);
+  font-size: 1.1rem;
+}
+.principle-card h3 {
+  margin: 0.5rem 0;
+  font-size: 1.2rem;
+}
+.principle-card p {
+  color: var(--muted);
+  font-size: 0.96rem;
+}
+@media (max-width: 900px) {
+  .principles-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 520px) {
+  .principles-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   RESOURCES (beyond coaching)
+   ========================================================================== */
+.resources-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+}
+.resources-grid > * {
+  height: 100%;
+}
+.resource-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--panel);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: var(--radius);
+  padding: 1.7rem;
+  backdrop-filter: blur(10px);
+  color: inherit;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+.resource-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+}
+.resource-tag {
+  align-self: flex-start;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+  margin-bottom: 0.9rem;
+}
+.resource-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.4rem;
+}
+.resource-card p {
+  color: var(--muted);
+  font-size: 0.96rem;
+}
+.resource-cta {
+  margin-top: auto;
+  padding-top: 1rem;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+@media (max-width: 860px) {
+  .resources-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .resources-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
    FOOTER
    ========================================================================== */
 .footer {
