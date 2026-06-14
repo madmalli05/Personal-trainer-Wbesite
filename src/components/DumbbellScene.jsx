@@ -1,112 +1,145 @@
 import { Suspense, useEffect, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Environment, Lightformer } from "@react-three/drei";
+import { Environment, Lightformer, Sparkles, Grid } from "@react-three/drei";
 import * as THREE from "three";
 import { theme } from "../content";
-import { prefersReducedMotion } from "../motionConfig";
+import { motion as cfg, allowHeavyFx, prefersReducedMotion } from "../motionConfig";
 
-// Shared materials (created once) — keeps the scene light.
-const STEEL = new THREE.MeshStandardMaterial({ color: "#c7ccd6", metalness: 1, roughness: 0.24 });
-const DARK = new THREE.MeshStandardMaterial({ color: "#2a2d34", metalness: 0.95, roughness: 0.36 });
-const PLATE = new THREE.MeshStandardMaterial({ color: "#141418", metalness: 0.85, roughness: 0.34 });
-const ACCENT = new THREE.MeshStandardMaterial({
+// ---- Shared materials (created once) --------------------------------------
+const STEEL = new THREE.MeshStandardMaterial({ color: "#aeb6c6", metalness: 1, roughness: 0.26 });
+const BODY = new THREE.MeshStandardMaterial({ color: "#232a38", metalness: 0.9, roughness: 0.44 });
+const DARK = new THREE.MeshStandardMaterial({ color: "#2a3040", metalness: 0.95, roughness: 0.38 });
+const PLATE = new THREE.MeshStandardMaterial({ color: "#10141d", metalness: 0.85, roughness: 0.34 });
+const CONTOUR = new THREE.MeshBasicMaterial({
   color: theme.accent,
-  emissive: theme.accent,
-  emissiveIntensity: 0.35,
-  metalness: 0.5,
-  roughness: 0.3,
+  wireframe: true,
+  transparent: true,
+  opacity: 0.06,
 });
 
-/* A weight plate (disc on the bar axis = X) with an accent rim. */
-function Plate({ radius = 1, thickness = 0.26 }) {
+// ---- Central athletic body sculpture (abstract, V-taper) ------------------
+function Body() {
+  return (
+    <group scale={0.82} position={[0, -0.2, 0]}>
+      {/* head + neck */}
+      <mesh position={[0, 2.2, 0]} material={BODY} scale={[0.36, 0.44, 0.36]}>
+        <sphereGeometry args={[1, 24, 18]} />
+      </mesh>
+      <mesh position={[0, 1.85, 0]} material={DARK}>
+        <cylinderGeometry args={[0.17, 0.22, 0.3, 16]} />
+      </mesh>
+      {/* chest (broad) → core (narrow) → pelvis : the V-taper */}
+      <mesh position={[0, 1.32, 0]} material={BODY} scale={[0.98, 0.72, 0.52]}>
+        <sphereGeometry args={[1, 28, 20]} />
+      </mesh>
+      <mesh position={[0, 0.55, 0]} material={BODY} scale={[0.62, 0.74, 0.45]}>
+        <sphereGeometry args={[1, 24, 18]} />
+      </mesh>
+      <mesh position={[0, -0.12, 0]} material={BODY} scale={[0.62, 0.5, 0.46]}>
+        <sphereGeometry args={[1, 22, 16]} />
+      </mesh>
+      {/* subtle anatomy contour over the chest */}
+      <mesh position={[0, 1.32, 0]} scale={[1.0, 0.74, 0.54]} material={CONTOUR}>
+        <sphereGeometry args={[1, 18, 12]} />
+      </mesh>
+      {/* shoulders / delts */}
+      {[1, -1].map((s) => (
+        <mesh key={s} position={[s * 0.92, 1.5, 0]} material={DARK} scale={0.42}>
+          <sphereGeometry args={[1, 20, 16]} />
+        </mesh>
+      ))}
+      {/* arms */}
+      {[1, -1].map((s) => (
+        <group key={s}>
+          <mesh position={[s * 1.08, 0.9, 0]} rotation={[0, 0, s * 0.22]} material={BODY}>
+            <capsuleGeometry args={[0.17, 0.85, 6, 14]} />
+          </mesh>
+          <mesh position={[s * 1.24, 0.05, 0.04]} rotation={[0, 0, s * 0.12]} material={DARK}>
+            <capsuleGeometry args={[0.14, 0.78, 6, 14]} />
+          </mesh>
+        </group>
+      ))}
+      {/* legs */}
+      {[1, -1].map((s) => (
+        <group key={s}>
+          <mesh position={[s * 0.32, -1.15, 0]} material={BODY}>
+            <capsuleGeometry args={[0.24, 0.95, 6, 14]} />
+          </mesh>
+          <mesh position={[s * 0.34, -2.2, 0.02]} material={DARK}>
+            <capsuleGeometry args={[0.18, 0.9, 6, 14]} />
+          </mesh>
+        </group>
+      ))}
+    </group>
+  );
+}
+
+// ---- A glowing muscle-zone marker (gently pulses) -------------------------
+function Marker({ position, phase, reducedMotion }) {
+  const mat = useRef();
+  useFrame((state) => {
+    if (!mat.current) return;
+    const pulse = reducedMotion ? 0.5 : 0.5 + 0.5 * Math.sin(state.clock.elapsedTime * 1.4 + phase);
+    mat.current.emissiveIntensity = 0.7 + pulse * 1.1;
+  });
+  return (
+    <mesh position={position}>
+      <sphereGeometry args={[0.075, 14, 14]} />
+      <meshStandardMaterial
+        ref={mat}
+        color={theme.accent}
+        emissive={theme.accent}
+        emissiveIntensity={1}
+        toneMapped={false}
+      />
+    </mesh>
+  );
+}
+
+// muscle zones: chest, 2 shoulders, 2 arms, back, core, 2 quads
+const ZONES = [
+  [0, 0.9, 0.42],
+  [0.75, 1.02, 0.26],
+  [-0.75, 1.02, 0.26],
+  [0.95, 0.3, 0.22],
+  [-0.95, 0.3, 0.22],
+  [0, 0.78, -0.42],
+  [0, 0.32, 0.4],
+  [0.27, -1.1, 0.3],
+  [-0.27, -1.1, 0.3],
+];
+
+// ---- A weight plate (disc on the bar axis = X) with accent rim ------------
+function Plate({ radius = 1, thickness = 0.24 }) {
   return (
     <group rotation={[0, 0, Math.PI / 2]}>
       <mesh material={PLATE}>
-        <cylinderGeometry args={[radius, radius, thickness, 48]} />
+        <cylinderGeometry args={[radius, radius, thickness, 40]} />
       </mesh>
-      <mesh material={ACCENT}>
-        <torusGeometry args={[radius * 0.99, thickness * 0.26, 16, 64]} />
-      </mesh>
-    </group>
-  );
-}
-
-/* The dumbbell (compact). */
-function Dumbbell() {
-  return (
-    <group scale={0.62}>
-      <mesh rotation={[0, 0, Math.PI / 2]} material={STEEL}>
-        <cylinderGeometry args={[0.17, 0.17, 2.1, 24]} />
-      </mesh>
-      {[1, -1].map((side) => (
-        <group key={side} position={[side * 1.05, 0, 0]}>
-          <mesh rotation={[0, 0, Math.PI / 2]} material={DARK}>
-            <cylinderGeometry args={[0.3, 0.3, 0.22, 24]} />
-          </mesh>
-          <group position={[side * 0.3, 0, 0]}>
-            <Plate radius={0.95} thickness={0.26} />
-          </group>
-          <group position={[side * 0.62, 0, 0]}>
-            <Plate radius={0.72} thickness={0.24} />
-          </group>
-          <mesh position={[side * 0.82, 0, 0]} rotation={[0, 0, Math.PI / 2]} material={STEEL}>
-            <cylinderGeometry args={[0.42, 0.42, 0.12, 32]} />
-          </mesh>
-        </group>
-      ))}
-    </group>
-  );
-}
-
-/* A leaning stack of plates. */
-function PlateStack() {
-  return (
-    <group scale={0.95}>
-      {[-0.33, -0.11, 0.11, 0.33].map((x, i) => (
-        <group key={i} position={[x, 0, 0]}>
-          <Plate radius={1.05} thickness={0.16} />
-        </group>
-      ))}
-    </group>
-  );
-}
-
-/* A kettlebell — bell + arched handle. */
-function Kettlebell() {
-  return (
-    <group scale={0.95}>
-      <mesh material={DARK}>
-        <sphereGeometry args={[0.85, 32, 24]} />
-      </mesh>
-      <mesh position={[0, 0.6, 0]} material={DARK}>
-        <cylinderGeometry args={[0.34, 0.42, 0.22, 24]} />
-      </mesh>
-      <mesh position={[0, 1.05, 0]} material={STEEL}>
-        <torusGeometry args={[0.34, 0.1, 16, 32, Math.PI]} />
-      </mesh>
-      <mesh material={ACCENT}>
-        <torusGeometry args={[0.86, 0.04, 12, 48]} />
+      <mesh>
+        <torusGeometry args={[radius * 0.99, thickness * 0.24, 14, 56]} />
+        <meshStandardMaterial color={theme.accent} emissive={theme.accent} emissiveIntensity={0.45} metalness={0.5} roughness={0.3} />
       </mesh>
     </group>
   );
 }
 
-/* An olympic barbell with plates on the ends. */
+// ---- The barbell that orbits the body -------------------------------------
 function Barbell() {
   return (
-    <group scale={0.62} rotation={[0, 0, 0.15]}>
+    <group>
       <mesh rotation={[0, 0, Math.PI / 2]} material={STEEL}>
-        <cylinderGeometry args={[0.075, 0.075, 4.2, 20]} />
+        <cylinderGeometry args={[0.07, 0.07, 4.6, 18]} />
       </mesh>
-      {[1, -1].map((side) => (
-        <group key={side} position={[side * 1.7, 0, 0]}>
+      {[1, -1].map((s) => (
+        <group key={s} position={[s * 1.9, 0, 0]}>
           <mesh rotation={[0, 0, Math.PI / 2]} material={DARK}>
-            <cylinderGeometry args={[0.18, 0.18, 0.16, 20]} />
+            <cylinderGeometry args={[0.16, 0.16, 0.14, 16]} />
           </mesh>
-          <group position={[side * 0.22, 0, 0]}>
-            <Plate radius={0.62} thickness={0.16} />
+          <group position={[s * 0.2, 0, 0]} scale={0.62}>
+            <Plate radius={0.64} thickness={0.16} />
           </group>
-          <group position={[side * 0.46, 0, 0]}>
+          <group position={[s * 0.42, 0, 0]} scale={0.62}>
             <Plate radius={0.5} thickness={0.14} />
           </group>
         </group>
@@ -115,109 +148,89 @@ function Barbell() {
   );
 }
 
-/* Wraps an object and gives it a gentle, individual spin. */
-function Floating({ children, position, speed = 0.2, tilt = 0, reducedMotion }) {
-  const ref = useRef();
-  useFrame((state) => {
-    if (!ref.current || reducedMotion) return;
-    ref.current.rotation.y = state.clock.elapsedTime * speed;
-  });
-  return (
-    <group ref={ref} position={position} rotation={[tilt, 0, 0]}>
-      {children}
-    </group>
-  );
-}
-
-/* A stylized low-poly body silhouette (athlete). */
-function BodyFigure() {
-  return (
-    <group scale={0.52} position={[0, -0.1, 0]}>
-      <mesh position={[0, 1.45, 0]} material={DARK}>
-        <sphereGeometry args={[0.3, 20, 16]} />
-      </mesh>
-      <mesh position={[0, 0.5, 0]} material={STEEL}>
-        <capsuleGeometry args={[0.36, 0.85, 6, 14]} />
-      </mesh>
-      <mesh position={[-0.52, 0.55, 0]} rotation={[0, 0, 0.35]} material={DARK}>
-        <capsuleGeometry args={[0.12, 0.85, 5, 10]} />
-      </mesh>
-      <mesh position={[0.52, 0.55, 0]} rotation={[0, 0, -0.35]} material={DARK}>
-        <capsuleGeometry args={[0.12, 0.85, 5, 10]} />
-      </mesh>
-      <mesh position={[-0.2, -0.65, 0]} material={STEEL}>
-        <capsuleGeometry args={[0.15, 0.95, 5, 10]} />
-      </mesh>
-      <mesh position={[0.2, -0.65, 0]} material={STEEL}>
-        <capsuleGeometry args={[0.15, 0.95, 5, 10]} />
-      </mesh>
-    </group>
-  );
-}
-
-/* The rig that flows objects through center on scroll + follows the mouse. */
+// ---- The orbit rig: body + barbell + plates, scroll & mouse linked --------
 function Rig({ scrollRef, pointerRef, reducedMotion }) {
-  const rig = useRef();
+  const root = useRef();
+  const bodyG = useRef();
+  const barbell = useRef();
+  const plateA = useRef();
+  const plateB = useRef();
 
   useFrame((state) => {
-    const g = rig.current;
-    if (!g) return;
     const t = state.clock.elapsedTime;
     const p = scrollRef?.current ?? 0;
     const ptr = pointerRef.current;
     const cam = state.camera;
+    const r = root.current;
+    if (!r) return;
 
     if (reducedMotion) {
-      g.position.x = -7.5; // show the first object (dumbbell), static
+      // Static, composed hero pose.
+      if (bodyG.current) bodyG.current.rotation.y = -0.4;
+      if (barbell.current) {
+        barbell.current.position.set(3.0, 0.6, 0);
+        barbell.current.rotation.set(0, 0.4, 0.1);
+      }
       return;
     }
 
-    // Scroll: slide the whole rig so each object flows through center in turn,
-    // "introducing" the site section by section.
-    g.position.x = THREE.MathUtils.lerp(g.position.x, THREE.MathUtils.lerp(-7.5, 7.5, p), 0.06);
-    g.position.y = Math.sin(t * 0.5) * 0.12;
+    // Body slowly rotates, with extra turn driven by scroll.
+    if (bodyG.current) bodyG.current.rotation.y = t * 0.18 + p * Math.PI * 1.4;
 
-    // Mouse: the scene tilts toward the cursor (parallax / "follows the user").
-    g.rotation.y = THREE.MathUtils.lerp(g.rotation.y, ptr.x * 0.32, 0.05);
-    g.rotation.x = THREE.MathUtils.lerp(g.rotation.x, -ptr.y * 0.2, 0.05);
+    // Barbell orbits the body on a scroll-linked elliptical path that weaves
+    // in front of (z>0) and behind (z<0) the sculpture.
+    const a = p * Math.PI * 3 + t * 0.25;
+    if (barbell.current) {
+      barbell.current.position.set(Math.cos(a) * 3.1, Math.sin(a * 0.8) * 1.3, Math.sin(a) * 2.3);
+      barbell.current.rotation.set(Math.sin(a) * 0.3, a + Math.PI / 2, 0.12 + Math.cos(a) * 0.2);
+    }
+    // Supporting plates orbit at other phases/radii.
+    if (plateA.current) {
+      const b = -a * 0.7 + 1.6;
+      plateA.current.position.set(Math.cos(b) * 3.9, Math.sin(b) * 1.6 + 0.4, Math.sin(b) * 1.8);
+      plateA.current.rotation.y = t * 0.4;
+    }
+    if (plateB.current) {
+      const c = a * 0.5 + 3.4;
+      plateB.current.position.set(Math.cos(c) * 4.3, Math.sin(c) * 1.2 - 0.6, Math.sin(c) * 2.6);
+      plateB.current.rotation.y = -t * 0.3;
+    }
 
-    // Camera drifts subtly with the mouse + dollies in a touch on scroll.
-    cam.position.x = THREE.MathUtils.lerp(cam.position.x, ptr.x * 0.7, 0.04);
-    cam.position.y = THREE.MathUtils.lerp(cam.position.y, 0.3 - ptr.y * 0.5, 0.04);
-    cam.position.z = THREE.MathUtils.lerp(cam.position.z, THREE.MathUtils.lerp(10, 8.8, p), 0.04);
-    cam.lookAt(0, 0, 0);
+    // Whole rig + camera follow the mouse (premium parallax).
+    r.rotation.y = THREE.MathUtils.lerp(r.rotation.y, ptr.x * 0.22, 0.05);
+    r.rotation.x = THREE.MathUtils.lerp(r.rotation.x, -ptr.y * 0.12, 0.05);
+    cam.position.x = THREE.MathUtils.lerp(cam.position.x, ptr.x * 0.8, 0.04);
+    cam.position.y = THREE.MathUtils.lerp(cam.position.y, 0.5 - ptr.y * 0.5, 0.04);
+    cam.position.z = THREE.MathUtils.lerp(cam.position.z, THREE.MathUtils.lerp(11.5, 9.5, p), 0.04);
+    cam.lookAt(0, 0.2, 0);
   });
 
-  // Objects spaced along X; the rig slides them through the viewport on scroll.
   return (
-    <group ref={rig} position={[-7.5, 0, 0]}>
-      <Floating position={[7.5, 0.3, 0]} speed={0.22} reducedMotion={reducedMotion}>
-        <Dumbbell />
-      </Floating>
-      <Floating position={[4.5, -0.5, -1]} speed={-0.16} tilt={0.4} reducedMotion={reducedMotion}>
-        <PlateStack />
-      </Floating>
-      <Floating position={[1.5, 0.4, 0.4]} speed={0.12} reducedMotion={reducedMotion}>
-        <BodyFigure />
-      </Floating>
-      <Floating position={[-1.5, 0.5, 0.4]} speed={0.18} reducedMotion={reducedMotion}>
-        <Kettlebell />
-      </Floating>
-      <Floating position={[-4.5, -0.3, -1]} speed={-0.2} reducedMotion={reducedMotion}>
+    <group ref={root}>
+      <group ref={bodyG}>
+        <Body />
+        {ZONES.map((pos, i) => (
+          <Marker key={i} position={pos} phase={i * 0.7} reducedMotion={reducedMotion} />
+        ))}
+      </group>
+      <group ref={barbell}>
         <Barbell />
-      </Floating>
-      <Floating position={[-7.5, 0.4, 0.2]} speed={0.24} tilt={0.5} reducedMotion={reducedMotion}>
-        <Plate radius={1.25} thickness={0.3} />
-      </Floating>
+      </group>
+      <group ref={plateA}>
+        <Plate radius={0.95} thickness={0.22} />
+      </group>
+      <group ref={plateB}>
+        <Plate radius={0.7} thickness={0.2} />
+      </group>
     </group>
   );
 }
 
 export default function DumbbellScene({ scrollRef }) {
   const reducedMotion = prefersReducedMotion();
+  const heavy = allowHeavyFx();
   const pointer = useRef({ x: 0, y: 0 });
 
-  // Track the mouse globally (the canvas itself is pointer-events:none).
   useEffect(() => {
     if (reducedMotion) return;
     const onMove = (e) => {
@@ -228,7 +241,6 @@ export default function DumbbellScene({ scrollRef }) {
     return () => window.removeEventListener("pointermove", onMove);
   }, [reducedMotion]);
 
-  // Gracefully skip WebGL entirely if unsupported.
   const webglOK = useRef(null);
   if (webglOK.current === null) {
     try {
@@ -244,22 +256,42 @@ export default function DumbbellScene({ scrollRef }) {
     <div id="bg-canvas" aria-hidden="true">
       <Canvas
         dpr={[1, 1.5]}
-        camera={{ position: [0, 0.3, 10], fov: 35 }}
+        camera={{ position: [0, 0.5, 11.5], fov: 32 }}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       >
         <Suspense fallback={null}>
-          <ambientLight intensity={0.45} />
-          <directionalLight position={[6, 9, 6]} intensity={1.8} />
-          <pointLight position={[-7, 2, 3]} intensity={20} color={theme.accent} />
-          <pointLight position={[6, -3, 4]} intensity={14} color={theme.accent2} />
+          <ambientLight intensity={0.4} />
+          <directionalLight position={[5, 8, 6]} intensity={1.6} color="#ffffff" />
+          {/* blue rim light behind the body reveals the silhouette */}
+          <spotLight position={[-6, 4, -7]} angle={0.7} penumbra={1} intensity={45} color={theme.accent} />
+          <pointLight position={[7, -2, 4]} intensity={16} color={theme.accent2} />
 
           <Rig scrollRef={scrollRef} pointerRef={pointer} reducedMotion={reducedMotion} />
 
-          {/* Self-contained studio reflections (no network/HDRI needed) */}
+          {heavy && (
+            <Sparkles count={45} scale={[16, 10, 7]} size={2} speed={0.22} opacity={0.4} color={theme.accent} />
+          )}
+          {heavy && (
+            <Grid
+              position={[0, -3.4, 0]}
+              args={[26, 26]}
+              cellSize={0.7}
+              cellThickness={0.6}
+              cellColor="#1b2740"
+              sectionSize={3}
+              sectionThickness={1}
+              sectionColor={theme.accent}
+              fadeDistance={26}
+              fadeStrength={2}
+              infiniteGrid={false}
+            />
+          )}
+
+          {/* Studio reflections (self-contained, no network/HDRI) */}
           <Environment resolution={256}>
             <Lightformer intensity={2} position={[0, 4, -6]} scale={[12, 6, 1]} />
-            <Lightformer intensity={1.6} color={theme.accent} position={[-6, 1, 2]} scale={[3, 8, 1]} />
-            <Lightformer intensity={1.2} color={theme.accent2} position={[6, -2, 2]} scale={[3, 8, 1]} />
+            <Lightformer intensity={1.8} color={theme.accent} position={[-6, 1, 2]} scale={[3, 9, 1]} />
+            <Lightformer intensity={1.1} color="#ffffff" position={[6, -1, 2]} scale={[3, 9, 1]} />
           </Environment>
         </Suspense>
       </Canvas>
