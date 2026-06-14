@@ -48,7 +48,7 @@ export default function Contact() {
   };
 
   return (
-    <section className="section" id="contact">
+    <section className="section" id="apply">
       <div className="container">
         <div className="contact-grid">
           <div className="contact-info">

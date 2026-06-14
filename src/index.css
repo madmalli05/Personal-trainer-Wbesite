@@ -5,12 +5,12 @@
    ========================================================================== */
 
 :root {
-  --accent: #e8ff3a;
-  --accent2: #ff4d2e;
-  --bg: #0a0a0c;
-  --panel: rgba(16, 16, 20, 0.82);
-  --text: #f5f5f7;
-  --muted: #9b9ba3;
+  --accent: #3b74ff;
+  --accent2: #7aa7ff;
+  --bg: #05070d;
+  --panel: rgba(10, 14, 24, 0.82);
+  --text: #f5f8ff;
+  --muted: #99a2ba;
 
   --maxw: 1180px;
   --radius: 18px;

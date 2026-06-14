@@ -15,26 +15,29 @@
 // 1) COLORS / THEME  — change the look of the whole site from here
 // ---------------------------------------------------------------------------
 export const theme = {
-  accent: "#e8ff3a", // main energy color (buttons, highlights, dumbbell rim)
-  accent2: "#ff4d2e", // secondary accent (gradients, glow)
-  bg: "#0a0a0c", // page background
-  panel: "rgba(16, 16, 20, 0.82)", // section panels (keep some transparency!)
-  text: "#f5f5f7", // main text color
-  muted: "#9b9ba3", // secondary / muted text
+  accent: "#3b74ff", // MadTrains primary — deep electric blue (buttons, highlights, 3D rims)
+  accent2: "#7aa7ff", // secondary blue (gradients, glow, energy)
+  bg: "#05070d", // near-black page background (slight blue undertone)
+  panel: "rgba(10, 14, 24, 0.82)", // glass section panels (keep some transparency!)
+  text: "#f5f8ff", // clean white text
+  muted: "#99a2ba", // secondary / muted blue-gray text
 };
 
 // ---------------------------------------------------------------------------
 // 2) BRAND / HERO
 // ---------------------------------------------------------------------------
 export const brand = {
-  name: "IRON FORGE", // shown in the navbar & footer
-  coach: "Alex Stone", // your name
+  name: "MadTrains", // shown in the navbar & footer
+  nameFirst: "MAD", // navbar/footer logo — first part (white)
+  nameAccent: "TRAINS", // navbar/footer logo — accent-colored part
+  coach: "Your Name", // your name (swap when ready)
   // Hero headline — split into lines for the big animated title:
-  headlineLines: ["FORGE", "YOUR", "STRENGTH"],
-  tagline: "Online & in-person bodybuilding coaching that builds the body you were made for.",
+  headlineLines: ["BUILT", "TO", "DOMINATE"],
+  tagline:
+    "Premium online coaching engineered to forge your strongest self — training, nutrition and accountability, dialed in.",
   // The two hero buttons:
-  primaryCta: { label: "Start Coaching", href: "#contact" },
-  secondaryCta: { label: "View Programs", href: "#programs" },
+  primaryCta: { label: "Apply for Coaching", href: "#apply" },
+  secondaryCta: { label: "Explore Programs", href: "#programs" },
 };
 
 // ---------------------------------------------------------------------------
@@ -299,5 +302,5 @@ export const nav = [
   { label: "Results", href: "#transformations" },
   { label: "FAQ", href: "#faq" },
   { label: "Journal", href: "#blog" },
-  { label: "Contact", href: "#contact" },
+  { label: "Apply", href: "#apply" },
 ];

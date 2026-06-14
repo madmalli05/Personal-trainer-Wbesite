@@ -5,10 +5,8 @@ export default function Footer() {
     <footer className="footer">
       <div className="container">
         <div className="brand">
-          {brand.name.split(" ")[0]}
-          <span style={{ color: "var(--accent)" }}>
-            {brand.name.split(" ").slice(1).join(" ") || ""}
-          </span>
+          {brand.nameFirst}
+          <span style={{ color: "var(--accent)" }}>{brand.nameAccent}</span>
         </div>
         <ul className="footer-links">
           {nav.map((item) => (

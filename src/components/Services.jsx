@@ -48,7 +48,7 @@ export default function Services() {
                   ))}
                 </ul>
                 <a
-                  href="#contact"
+                  href="#apply"
                   className={`btn ${plan.featured ? "btn-primary" : "btn-ghost"}`}
                 >
                   {plan.cta}

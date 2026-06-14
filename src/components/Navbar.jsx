@@ -18,8 +18,8 @@ export default function Navbar() {
     <header className={`navbar ${scrolled ? "scrolled" : ""}`}>
       <div className="container">
         <a href="#top" className="brand" onClick={close}>
-          {brand.name.split(" ")[0]}
-          <span>{brand.name.split(" ").slice(1).join(" ") || ""}</span>
+          {brand.nameFirst}
+          <span>{brand.nameAccent}</span>
         </a>
 
         <nav>

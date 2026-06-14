@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Placeholder image">
   <defs>
     <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#15151b"/>
-      <stop offset="1" stop-color="#0a0a0c"/>
+      <stop offset="0" stop-color="#10172b"/>
+      <stop offset="1" stop-color="#05070d"/>
     </linearGradient>
   </defs>
   <rect width="1200" height="675" fill="url(#g)"/>
-  <g transform="translate(600 300)" fill="#e8ff3a" opacity="0.85">
+  <g transform="translate(600 300)" fill="#3b74ff" opacity="0.9">
     <rect x="-150" y="-26" width="22" height="52" rx="8"/>
     <rect x="-122" y="-46" width="22" height="92" rx="8"/>
     <rect x="-86" y="-12" width="172" height="24" rx="12"/>
