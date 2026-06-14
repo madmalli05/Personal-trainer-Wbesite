@@ -34,7 +34,7 @@ export const brand = {
   // Hero headline — split into lines for the big animated title:
   headlineLines: ["BUILT", "TO", "DOMINATE"],
   tagline:
-    "Premium online coaching engineered to forge your strongest self — training, nutrition and accountability, dialed in.",
+    "A future fitness brand. Anatomy-driven coaching, engineered programming and relentless standards — built to transform.",
   // The two hero buttons:
   primaryCta: { label: "Apply for Coaching", href: "#apply" },
   secondaryCta: { label: "Explore Programs", href: "#programs" },
@@ -44,15 +44,16 @@ export const brand = {
 // 3) ABOUT  — your story + the headline stats that count up on scroll
 // ---------------------------------------------------------------------------
 export const about = {
-  kicker: "About the Coach",
-  title: "I help everyday people build extraordinary physiques.",
-  // Coach photo. Swap this URL for your own (or drop a file in /public and use
-  // "/my-photo.jpg"). If the image ever fails to load, an on-brand placeholder shows.
-  image: "https://picsum.photos/seed/ironforge-coach/900/1100",
-  imageAlt: "Coach Alex Stone in the gym",
+  kicker: "The Origin",
+  title: "A brand built on discipline, structure & transformation.",
+  // Coach / brand photo or video poster. Swap this URL for your own (or drop a
+  // file in /public and use "/my-photo.jpg"). Falls back to a clean placeholder.
+  image: "https://picsum.photos/seed/madtrains-origin/900/1100",
+  imageAlt: "MadTrains — placeholder (add your photo or video here)",
   paragraphs: [
-    "I'm Alex — a certified strength & physique coach with over a decade in the trenches. I've competed, I've failed, I've rebuilt, and I've coached hundreds of clients to do the same.",
-    "My approach is simple: smart programming, sustainable nutrition, and relentless accountability. No gimmicks, no crash diets — just a plan built around your body, your schedule and your goals.",
+    "MadTrains isn't a template or a quick fix. It's a coaching brand built around three things: discipline, structure, and transformation — engineered to take you further than you'd push yourself alone.",
+    "Every program is anatomy-driven and fully customized: smart progressive training, sustainable nutrition, and relentless accountability. No gimmicks. Just a system that works, for life.",
+    // ↑ Edit this story to introduce yourself / your future brand.
   ],
   // These numbers animate from 0 when they scroll into view.
   stats: [
@@ -356,12 +357,12 @@ export const resources = {
   title: "More than a trainer — a brand.",
   subtitle: "MadTrains is building a complete fitness ecosystem.",
   items: [
-    { tag: "Nutrition", title: "MadFuel Nutrition", text: "Macro guides, recipes and supplement protocols that fit real life.", href: "#" },
-    { tag: "Standards", title: "Strength Standards", text: "Know exactly where you rank and what to chase next.", href: "#" },
-    { tag: "Free", title: "Free Resources", text: "Starter programs, mobility routines and training guides — on the house.", href: "#" },
-    { tag: "Challenge", title: "30-Day Challenges", text: "Community challenges to build momentum and habits that stick.", href: "#" },
-    { tag: "Community", title: "The MadTrains Community", text: "Train alongside people chasing the same standard.", href: "#" },
-    { tag: "Coming Soon", title: "The MadTrains App", text: "Everything — training, nutrition, check-ins — in one place. In the works.", href: "#" },
+    { tag: "Philosophy", title: "Training Philosophy", text: "The principles that drive every MadTrains program — and why they work.", href: "#" },
+    { tag: "Nutrition", title: "Nutrition", text: "Macro guides, recipes and supplement protocols that fit real life.", href: "#" },
+    { tag: "Hypertrophy", title: "Hypertrophy", text: "How to actually build muscle — volume, intensity and progression done right.", href: "#" },
+    { tag: "Recovery", title: "Recovery", text: "Sleep, mobility and deload strategy so you keep progressing, not breaking.", href: "#" },
+    { tag: "Challenge", title: "Challenges", text: "Community challenges to build momentum and habits that stick.", href: "#" },
+    { tag: "Coming Soon", title: "Community & App", text: "A future MadTrains platform — training, nutrition and check-ins in one place.", href: "#" },
   ],
 };
 
