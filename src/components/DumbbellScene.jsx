@@ -129,6 +129,32 @@ function Floating({ children, position, speed = 0.2, tilt = 0, reducedMotion }) 
   );
 }
 
+/* A stylized low-poly body silhouette (athlete). */
+function BodyFigure() {
+  return (
+    <group scale={0.52} position={[0, -0.1, 0]}>
+      <mesh position={[0, 1.45, 0]} material={DARK}>
+        <sphereGeometry args={[0.3, 20, 16]} />
+      </mesh>
+      <mesh position={[0, 0.5, 0]} material={STEEL}>
+        <capsuleGeometry args={[0.36, 0.85, 6, 14]} />
+      </mesh>
+      <mesh position={[-0.52, 0.55, 0]} rotation={[0, 0, 0.35]} material={DARK}>
+        <capsuleGeometry args={[0.12, 0.85, 5, 10]} />
+      </mesh>
+      <mesh position={[0.52, 0.55, 0]} rotation={[0, 0, -0.35]} material={DARK}>
+        <capsuleGeometry args={[0.12, 0.85, 5, 10]} />
+      </mesh>
+      <mesh position={[-0.2, -0.65, 0]} material={STEEL}>
+        <capsuleGeometry args={[0.15, 0.95, 5, 10]} />
+      </mesh>
+      <mesh position={[0.2, -0.65, 0]} material={STEEL}>
+        <capsuleGeometry args={[0.15, 0.95, 5, 10]} />
+      </mesh>
+    </group>
+  );
+}
+
 /* The rig that flows objects through center on scroll + follows the mouse. */
 function Rig({ scrollRef, pointerRef, reducedMotion }) {
   const rig = useRef();
@@ -142,13 +168,13 @@ function Rig({ scrollRef, pointerRef, reducedMotion }) {
     const cam = state.camera;
 
     if (reducedMotion) {
-      g.position.x = -6; // show the first object (dumbbell), static
+      g.position.x = -7.5; // show the first object (dumbbell), static
       return;
     }
 
     // Scroll: slide the whole rig so each object flows through center in turn,
     // "introducing" the site section by section.
-    g.position.x = THREE.MathUtils.lerp(g.position.x, THREE.MathUtils.lerp(-6, 6, p), 0.06);
+    g.position.x = THREE.MathUtils.lerp(g.position.x, THREE.MathUtils.lerp(-7.5, 7.5, p), 0.06);
     g.position.y = Math.sin(t * 0.5) * 0.12;
 
     // Mouse: the scene tilts toward the cursor (parallax / "follows the user").
@@ -164,20 +190,23 @@ function Rig({ scrollRef, pointerRef, reducedMotion }) {
 
   // Objects spaced along X; the rig slides them through the viewport on scroll.
   return (
-    <group ref={rig} position={[-6, 0, 0]}>
-      <Floating position={[6, 0.3, 0]} speed={0.22} reducedMotion={reducedMotion}>
+    <group ref={rig} position={[-7.5, 0, 0]}>
+      <Floating position={[7.5, 0.3, 0]} speed={0.22} reducedMotion={reducedMotion}>
         <Dumbbell />
       </Floating>
-      <Floating position={[3, -0.5, -1]} speed={-0.16} tilt={0.4} reducedMotion={reducedMotion}>
+      <Floating position={[4.5, -0.5, -1]} speed={-0.16} tilt={0.4} reducedMotion={reducedMotion}>
         <PlateStack />
       </Floating>
-      <Floating position={[0, 0.5, 0.4]} speed={0.18} reducedMotion={reducedMotion}>
+      <Floating position={[1.5, 0.4, 0.4]} speed={0.12} reducedMotion={reducedMotion}>
+        <BodyFigure />
+      </Floating>
+      <Floating position={[-1.5, 0.5, 0.4]} speed={0.18} reducedMotion={reducedMotion}>
         <Kettlebell />
       </Floating>
-      <Floating position={[-3, -0.3, -1]} speed={-0.2} reducedMotion={reducedMotion}>
+      <Floating position={[-4.5, -0.3, -1]} speed={-0.2} reducedMotion={reducedMotion}>
         <Barbell />
       </Floating>
-      <Floating position={[-6, 0.4, 0.2]} speed={0.24} tilt={0.5} reducedMotion={reducedMotion}>
+      <Floating position={[-7.5, 0.4, 0.2]} speed={0.24} tilt={0.5} reducedMotion={reducedMotion}>
         <Plate radius={1.25} thickness={0.3} />
       </Floating>
     </group>
