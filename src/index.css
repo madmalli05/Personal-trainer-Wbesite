@@ -1175,59 +1175,132 @@ body.cursor-active textarea {
 }
 
 /* ==========================================================================
-   METHOD (process steps)
+   METHOD (muscle-system dashboard)
    ========================================================================== */
-.method-grid {
+.method-dash {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1.3fr 0.9fr;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: start;
+}
+.method-stages {
+  list-style: none;
+  display: grid;
+  gap: 0.6rem;
+  counter-reset: stage;
+}
+.method-stages li {
+  display: flex;
   gap: 1.2rem;
-}
-.method-grid > * {
-  height: 100%;
-}
-.method-step {
-  position: relative;
-  height: 100%;
-  background: var(--panel);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  align-items: baseline;
+  padding: 1.1rem 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius);
-  padding: 1.8rem;
-  backdrop-filter: blur(8px);
+  background: color-mix(in srgb, var(--panel) 60%, transparent);
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+.method-stages li:hover {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  transform: translateX(4px);
+}
+.stage-n {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  line-height: 1;
+  color: var(--accent);
+  min-width: 2.2ch;
+}
+.stage-body h3 {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.stage-body p {
+  color: var(--muted);
+  font-size: 0.96rem;
+  margin-top: 0.25rem;
+}
+.muscle-panel {
+  position: sticky;
+  top: 90px;
+  background: linear-gradient(160deg, rgba(20, 30, 55, 0.6), rgba(8, 12, 22, 0.7));
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 30px 80px -40px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+.muscle-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: var(--text);
+  margin-bottom: 1.3rem;
+}
+.muscle-status {
+  margin-left: auto;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+}
+.muscle-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+  animation: musclePulse 1.6s ease-in-out infinite;
+}
+.muscle-zones {
+  list-style: none;
+  display: grid;
+  gap: 0.85rem;
+}
+.muscle-zone {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  align-items: center;
+  gap: 0.8rem;
+}
+.zone-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #cdd6ea;
+}
+.zone-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
   overflow: hidden;
 }
-.method-step::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: linear-gradient(var(--accent), transparent);
+.zone-fill {
+  display: block;
+  height: 100%;
+  width: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transform-origin: left;
+  animation: zoneScan 3.2s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.35s);
 }
-.method-n {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  color: var(--accent);
-  letter-spacing: 0.05em;
+@keyframes musclePulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
 }
-.method-step h3 {
-  font-size: 1.3rem;
-  margin: 0.4rem 0 0.5rem;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-}
-.method-step p {
-  color: var(--muted);
-  font-size: 0.97rem;
+@keyframes zoneScan {
+  0%, 100% { transform: scaleX(0.35); opacity: 0.5; }
+  50% { transform: scaleX(1); opacity: 1; }
 }
 @media (max-width: 860px) {
-  .method-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-@media (max-width: 560px) {
-  .method-grid {
+  .method-dash {
     grid-template-columns: 1fr;
+  }
+  .muscle-panel {
+    position: static;
   }
 }
 

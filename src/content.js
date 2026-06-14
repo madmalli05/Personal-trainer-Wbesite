@@ -318,17 +318,18 @@ export const socialProof = {
 // 6c) COACHING METHOD  — the step-by-step process
 // ---------------------------------------------------------------------------
 export const method = {
-  kicker: "The Method",
-  title: "How MadTrains works.",
-  subtitle: "A clear, proven system — from first application to lasting results.",
-  steps: [
-    { n: "01", title: "Apply", text: "Tell me your goals, history and schedule. I only take clients I can genuinely help." },
-    { n: "02", title: "Assessment", text: "We map your starting point — strength, mobility, nutrition and lifestyle." },
-    { n: "03", title: "Your Plan", text: "A fully custom training + nutrition blueprint built around your life." },
-    { n: "04", title: "Train", text: "Follow the plan in-app with video guidance and form checks." },
-    { n: "05", title: "Check-ins", text: "Regular reviews and adjustments keep progress relentless." },
-    { n: "06", title: "Results", text: "We hit the goal, then set the next one. This is a system for life." },
+  kicker: "The System",
+  title: "The MadTrains Method.",
+  subtitle: "A futuristic training system — every phase engineered toward transformation.",
+  stages: [
+    { n: "01", title: "Assess", text: "We map your starting point — strength, mobility, nutrition and lifestyle." },
+    { n: "02", title: "Build", text: "A fully custom training + nutrition blueprint, built around your life." },
+    { n: "03", title: "Train", text: "Execute the plan in-app with video guidance and form checks." },
+    { n: "04", title: "Refine", text: "Regular check-ins and data-driven adjustments keep progress relentless." },
+    { n: "05", title: "Transform", text: "We hit the goal, then set the next. A system built for life." },
   ],
+  // Muscle zones highlighted in the dashboard (and mirrored by the 3D scene).
+  muscleZones: ["Chest", "Back", "Shoulders", "Arms", "Core", "Quads"],
 };
 
 // ---------------------------------------------------------------------------

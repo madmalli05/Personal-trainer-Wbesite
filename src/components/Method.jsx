@@ -16,16 +16,39 @@ export default function Method() {
           </Reveal>
         </div>
 
-        <div className="method-grid">
-          {method.steps.map((s, i) => (
-            <Reveal key={i} delay={i * 0.06}>
-              <div className="method-step">
-                <span className="method-n">{s.n}</span>
-                <h3>{s.title}</h3>
-                <p>{s.text}</p>
+        <div className="method-dash">
+          {/* Numbered stages */}
+          <ol className="method-stages">
+            {method.stages.map((s, i) => (
+              <Reveal key={i} delay={i * 0.06} as="li">
+                <span className="stage-n">{s.n}</span>
+                <div className="stage-body">
+                  <h3>{s.title}</h3>
+                  <p>{s.text}</p>
+                </div>
+              </Reveal>
+            ))}
+          </ol>
+
+          {/* Muscle-system panel (futuristic dashboard) */}
+          <Reveal delay={0.1}>
+            <aside className="muscle-panel" aria-label="Muscle system overview">
+              <div className="muscle-panel-head">
+                <span className="muscle-dot" /> MUSCLE SYSTEM
+                <span className="muscle-status">// ONLINE</span>
               </div>
-            </Reveal>
-          ))}
+              <ul className="muscle-zones">
+                {method.muscleZones.map((z, i) => (
+                  <li key={z} className="muscle-zone" style={{ "--i": i }}>
+                    <span className="zone-name">{z}</span>
+                    <span className="zone-bar">
+                      <span className="zone-fill" />
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </aside>
+          </Reveal>
         </div>
       </div>
     </section>
