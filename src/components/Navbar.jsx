@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { brand, nav } from "../content";
 
 export default function Navbar() {
@@ -17,24 +18,29 @@ export default function Navbar() {
   return (
     <header className={`navbar ${scrolled ? "scrolled" : ""}`}>
       <div className="container">
-        <a href="#top" className="brand" onClick={close}>
+        <Link to="/" className="brand" onClick={close}>
           {brand.nameFirst}
           <span>{brand.nameAccent}</span>
-        </a>
+        </Link>
 
         <nav>
           <ul className={`nav-links ${open ? "open" : ""}`}>
             {nav.map((item) => (
               <li key={item.href}>
-                <a href={item.href} onClick={close}>
+                {/* "/#section" so the link works from any page (RouteScroll handles it) */}
+                <Link to={`/${item.href}`} onClick={close}>
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
             <li>
-              <a href={brand.primaryCta.href} className="btn btn-primary nav-cta" onClick={close}>
+              <Link
+                to={`/${brand.primaryCta.href}`}
+                className="btn btn-primary nav-cta"
+                onClick={close}
+              >
                 {brand.primaryCta.label}
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>

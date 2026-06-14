@@ -1,27 +1,27 @@
 import { lazy, Suspense, useEffect, useRef } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { theme } from "./content";
 import SmoothScroll from "./providers/SmoothScroll";
 import CustomCursor from "./components/motion/CustomCursor";
+import RouteScroll from "./components/RouteScroll";
 import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import About from "./components/About";
-import Services from "./components/Services";
-import Transformations from "./components/Transformations";
-import Results from "./components/Results";
-import Faq from "./components/Faq";
-import Blog from "./components/Blog";
-import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import AboutPage from "./pages/AboutPage";
+import ProgramsPage from "./pages/ProgramsPage";
+import TransformationsPage from "./pages/TransformationsPage";
+import JournalPage from "./pages/JournalPage";
+import ApplyPage from "./pages/ApplyPage";
+import PhilosophyPage from "./pages/PhilosophyPage";
 
-// Code-split the 3D scene (three.js/R3F) out of the initial bundle — it sits
-// behind the content, so a null fallback is invisible while it loads.
+// Code-split the 3D scene (three.js/R3F) out of the initial bundle.
 const DumbbellScene = lazy(() => import("./components/DumbbellScene"));
 
 export default function App() {
   // Shared scroll progress (0→1), fed by SmoothScroll, read by the 3D scene.
   const progressRef = useRef(0);
 
-  // Inject the theme colors from content.js as CSS variables.
+  // Inject theme colors from content.js as CSS variables.
   useEffect(() => {
     const r = document.documentElement.style;
     r.setProperty("--accent", theme.accent);
@@ -33,23 +33,29 @@ export default function App() {
   }, []);
 
   return (
-    <SmoothScroll progressRef={progressRef}>
-      <CustomCursor />
-      <Suspense fallback={null}>
-        <DumbbellScene scrollRef={progressRef} />
-      </Suspense>
-      <Navbar />
-      <main className="page">
-        <Hero />
-        <About />
-        <Services />
-        <Transformations />
-        <Results />
-        <Faq />
-        <Blog />
-        <Contact />
-      </main>
-      <Footer />
-    </SmoothScroll>
+    <BrowserRouter>
+      <SmoothScroll progressRef={progressRef}>
+        {/* Persistent across every route: cursor, 3D backdrop, nav, footer */}
+        <CustomCursor />
+        <Suspense fallback={null}>
+          <DumbbellScene scrollRef={progressRef} />
+        </Suspense>
+        <Navbar />
+        <RouteScroll />
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/programs" element={<ProgramsPage />} />
+          <Route path="/transformations" element={<TransformationsPage />} />
+          <Route path="/journal" element={<JournalPage />} />
+          <Route path="/apply" element={<ApplyPage />} />
+          <Route path="/philosophy" element={<PhilosophyPage />} />
+          <Route path="*" element={<Home />} />
+        </Routes>
+
+        <Footer />
+      </SmoothScroll>
+    </BrowserRouter>
   );
 }

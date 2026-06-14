@@ -304,3 +304,16 @@ export const nav = [
   { label: "Journal", href: "#blog" },
   { label: "Apply", href: "#apply" },
 ];
+
+// ---------------------------------------------------------------------------
+// 8) PAGES  — dedicated routes (shown in the footer; reachable via "/about" etc.)
+// ---------------------------------------------------------------------------
+export const pages = [
+  { label: "Home", to: "/" },
+  { label: "About", to: "/about" },
+  { label: "Programs", to: "/programs" },
+  { label: "Transformations", to: "/transformations" },
+  { label: "Journal", to: "/journal" },
+  { label: "Philosophy", to: "/philosophy" },
+  { label: "Apply", to: "/apply" },
+];
