@@ -16,20 +16,21 @@
 
 export const modelAssets = {
   body: {
-    // Set true AFTER you add public/models/madtrains-body.glb
-    useModel: false,
+    // A generated metaball sculpture ships at public/models/madtrains-body.glb
+    // (see scripts/build-body.mjs). Replace it with a real anatomical scan for
+    // photoreal quality, keep useModel:true.
+    useModel: true,
     path: "/models/madtrains-body.glb",
 
-    // Big, cropped — like the Cosmos humanoid. Tune to your model.
-    // Keep X at 0 so the figure rotates in place (camera handles asymmetry/crop).
-    scale: 9,
-    position: [0, -7.2, 0], // low so torso/shoulders/head fill & crop the frame
+    // The generated mesh is centered at origin, ~1.74 units tall. Big + cropped.
+    // Keep X/Z at 0 so the figure rotates in place (camera handles asymmetry).
+    scale: 4.2,
+    position: [0, -1.5, 0],
     rotation: [0, -0.4, 0],
     fallbackScale: 1.0, // extra multiplier applied to the silhouette fallback
 
-    // Dark "statue / anatomy" material override applied to every mesh in the GLB
-    // (so it never looks like shiny toy plastic). Tune to taste.
-    material: { color: "#161b26", metalness: 0.28, roughness: 0.66, rim: true },
+    // Dark deep-blue "statue / anatomy" material override (matches the brand).
+    material: { color: "#1b2c4e", metalness: 0.32, roughness: 0.52, rim: true },
 
     // OPTIONAL: if your GLB has named muscle meshes, map them here to enable
     // true per-muscle highlighting later. Leave empty to use approximate anchors.
@@ -39,13 +40,14 @@ export const modelAssets = {
   // Approximate muscle-zone anchor positions (in body-local space) for the
   // glowing "training scan" overlays. Tune these to sit on your model's muscles.
   // [x, y, z] — front zones have +z, back zones have −z.
+  // (model-local space — the generated mesh is ~1.74 tall, centered at origin)
   muscleZoneAnchors: {
-    Chest: [0.0, 0.95, 0.55],
-    Shoulders: [0.95, 1.15, 0.35],
-    Arms: [1.25, 0.35, 0.3],
-    Core: [0.0, 0.3, 0.55],
-    Quads: [0.4, -1.0, 0.4],
-    Back: [0.0, 0.9, -0.55],
+    Chest: [0.0, 0.45, 0.34],
+    Shoulders: [0.5, 0.5, 0.2],
+    Arms: [0.62, 0.15, 0.2],
+    Core: [0.0, 0.15, 0.36],
+    Quads: [0.16, -0.45, 0.3],
+    Back: [0.0, 0.42, -0.32],
   },
 
   // OPTIONAL separate hero prop model. Empty path => procedural barbell is used.
@@ -54,14 +56,14 @@ export const modelAssets = {
   // Camera framing per scroll position (lerped between stops). Close + cropped.
   // `pos` = camera position, `look` = lookAt target. fov controls crop.
   camera: {
-    fov: 38,
+    fov: 40,
     stops: [
-      { at: 0.0, pos: [0.6, 0.3, 7.0], look: [0.5, 0.2, 0] }, // hero — close 3/4 front
-      { at: 0.18, pos: [1.7, 1.0, 7.4], look: [0.2, 0.6, 0] }, // about — shoulder/side
-      { at: 0.4, pos: [-0.4, 0.3, 8.0], look: [0.0, 0.2, 0] }, // programs — prop reveal
-      { at: 0.6, pos: [0.5, 0.3, 6.8], look: [0.3, 0.2, 0] }, // method — anatomy scan
-      { at: 0.8, pos: [-0.8, 0.7, 7.6], look: [0.0, 0.4, 0] }, // results — back/lats
-      { at: 1.0, pos: [0.8, 0.3, 6.6], look: [0.5, 0.2, 0] }, // apply — final pose
+      { at: 0.0, pos: [0.5, 0.8, 6.8], look: [0.35, 0.7, 0] }, // hero — close 3/4 front (chest/shoulders)
+      { at: 0.18, pos: [1.9, 1.3, 7.0], look: [0.2, 1.0, 0] }, // about — shoulder/head
+      { at: 0.4, pos: [-0.7, 0.6, 7.6], look: [0.0, 0.5, 0] }, // programs — prop reveal
+      { at: 0.6, pos: [0.5, 0.6, 6.6], look: [0.3, 0.6, 0] }, // method — anatomy scan
+      { at: 0.8, pos: [-1.1, 0.9, 7.4], look: [0.0, 0.8, 0] }, // results — back/lats
+      { at: 1.0, pos: [0.8, 0.6, 6.4], look: [0.4, 0.6, 0] }, // apply — final pose
     ],
   },
 

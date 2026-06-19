@@ -74,7 +74,7 @@ function Rig({ scrollRef, pointerRef, reducedMotion }) {
 
   return (
     <>
-      <group ref={bodyG}>
+      <group ref={bodyG} position={modelAssets.body.position} scale={modelAssets.body.scale}>
         <BodyModel />
         <MuscleScan scrollRef={scrollRef} reducedMotion={reducedMotion} />
       </group>

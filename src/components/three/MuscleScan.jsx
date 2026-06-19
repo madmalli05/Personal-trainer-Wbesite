@@ -20,7 +20,7 @@ function ZoneRing({ position, back, phase, scrollRef, reducedMotion }) {
   return (
     <group position={position} rotation={[0, back ? Math.PI : 0, 0]}>
       <mesh>
-        <torusGeometry args={[0.34, 0.018, 10, 40]} />
+        <torusGeometry args={[0.15, 0.012, 10, 36]} />
         <meshBasicMaterial
           ref={mat}
           color={theme.accent}

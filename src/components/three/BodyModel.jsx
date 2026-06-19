@@ -31,7 +31,9 @@ function GLTFBody() {
     return root;
   }, [scene, cfg]);
 
-  return <primitive object={prepared} scale={cfg.scale} position={cfg.position} rotation={cfg.rotation} />;
+  // Centered/raw — the parent body group (in DumbbellScene) applies scale,
+  // position and rotation so the muscle-scan overlays share the same space.
+  return <primitive object={prepared} />;
 }
 
 /* ---------------------------------------------------------------------------
@@ -69,7 +71,9 @@ function FallbackBody() {
     return geo;
   }, []);
 
-  const s = 1.9 * cfg.fallbackScale; // intrinsic size so it reads huge in frame
+  // Normalize the silhouette to ~1.74 units tall (same as the generated model)
+  // so the parent body group's scale/position framing works for both.
+  const s = 0.28 * cfg.fallbackScale;
   return (
     <group scale={[s, s, s * 0.8]}>
       <mesh geometry={geometry}>
