@@ -43,7 +43,8 @@ function Rig({ scrollRef, pointerRef, reducedMotion }) {
   const propG = useRef();
 
   useFrame((state, delta) => {
-    const p = THREE.MathUtils.clamp(scrollRef?.current ?? 0, 0, 1);
+    // Reduced motion → freeze on the hero composition (p=0), no scroll rotation.
+    const p = reducedMotion ? 0 : THREE.MathUtils.clamp(scrollRef?.current ?? 0, 0, 1);
     const ptr = pointerRef.current;
     const cam = state.camera;
     const k = Math.min(1, delta * 4); // frame-rate-independent damping
